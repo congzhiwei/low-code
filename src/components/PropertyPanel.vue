@@ -1,11 +1,13 @@
 <template>
   <aside class="property-panel">
-    <h3 class="nav-title">属性设置</h3>
-    <el-tabs v-model="activeTab">
-      <el-tab-pane label="属性" name="props"></el-tab-pane>
-      <el-tab-pane label="样式" name="styles"></el-tab-pane>
-      <el-tab-pane label="高级" name="advanced"></el-tab-pane>
-    </el-tabs>
+    <template v-if="selectedComponent">
+      <h3 class="nav-title">属性设置</h3>
+      <el-tabs v-model="activeTab">
+        <el-tab-pane label="属性" name="props"></el-tab-pane>
+        <el-tab-pane label="样式" name="styles"></el-tab-pane>
+        <el-tab-pane label="高级" name="advanced"></el-tab-pane>
+      </el-tabs>
+    </template>
     <div class="property-content">
         <template v-if="selectedComponent">
             <div v-show="activeTab === 'props'">
@@ -34,6 +36,23 @@
                 :component-type="selectedComponent.type"
                 @update="updateEvents"
               />
+            </div>
+        </template>
+        <template v-else>
+            <div class="page-settings">
+                <h3>页面设置</h3>
+                <div class="setting-item">
+                    <span>背景颜色：</span>
+                    <el-color-picker v-model="canvasStore.canvasStyle.backgroundColor" @change="updateCanvasStyle" size="small" show-alpha />
+                </div>
+                <div class="setting-item">
+                    <span>宽度：</span>
+                    <el-input v-model="canvasStore.canvasStyle.width" @change="updateCanvasStyle" size="small" />
+                </div>
+                <div class="setting-item">
+                    <span>高度：</span>
+                    <el-input v-model="canvasStore.canvasStyle.height" @change="updateCanvasStyle" size="small" />
+                </div>
             </div>
         </template>
     </div>
@@ -116,6 +135,9 @@ export default defineComponent({
     return { canvasStore, getPropType, getPropName, apiList, deleteComponent };
   },
   methods: {
+    updateCanvasStyle() {
+        this.canvasStore.canvasStyle = {...this.canvasStore.canvasStyle};
+    },
     updateProps() {
       if (this.selectedComponent) {
         console.log('更新属性：', this.selectedComponent);
@@ -276,6 +298,24 @@ export default defineComponent({
     justify-content: flex-end;
     margin-top: 20px;
     margin-bottom: 40px;
+  }
+}
+.page-settings {
+  h3{
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    
+  }
+  .setting-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      
+      span {
+          width: 80px;
+          font-size: 12px;
+      }
   }
 }
 </style>

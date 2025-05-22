@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-06 17:40:47
  * @LastEditors: zwcong
- * @LastEditTime: 2025-05-22 15:55:33
+ * @LastEditTime: 2025-05-22 16:42:10
 -->
 <template>
   <div>
@@ -99,6 +99,7 @@
                 v-model="propsConfig[key][cssProp.key]" 
                 @change="$emit('update')" 
                 size="small" 
+                show-alpha
               />
             </template>
           </div>

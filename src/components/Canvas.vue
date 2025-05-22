@@ -1,11 +1,17 @@
 <template>
-  <main class="canvas-container">
+  <main 
+    class="canvas-container" 
+    @click="handleCanvasClick"
+    @dragover="handleDragOver"
+    @drop="handleDrop"
+  >
     <div class="canvas" ref="canvas" 
         @drop="handleDrop" 
         @dragover="handleDragOver"
         :style="canvasStyle">
         <component 
             v-for="(component, index) in components" 
+            class="component-wrapper"
             :key="index"
             :is="component.type"
             :style="{ position: 'absolute', left: component.x + 'px', top: component.y + 'px', ...componentStyles[index] }"
@@ -199,6 +205,14 @@ export default defineComponent({
       })
     })
 
+    const handleCanvasClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target?.closest('.component-wrapper')) {
+        canvasStore.selectedComponent = null;
+        canvasStore.selectedComponentIndex = -1;
+      }
+    }
+
     // const handleKeyDown = (e: KeyboardEvent) => {
     //   console.log(e.key, e.target);
     //   if ((e.key === 'Delete' || e.key === 'Backspace') && 
@@ -228,6 +242,7 @@ export default defineComponent({
       canvasStyle,
       componentDefaultValues,
       componentStyles,
+      handleCanvasClick
     };
   }
 });
