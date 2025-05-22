@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-06 17:40:47
  * @LastEditors: zwcong
- * @LastEditTime: 2025-05-21 18:32:06
+ * @LastEditTime: 2025-05-22 15:55:33
 -->
 <template>
   <div>
@@ -44,7 +44,7 @@
         </div>
       </template>
       <template v-else-if="getConfigType(key) === 'color'">
-        <el-color-picker v-model="propsConfig[key]" @change="$emit('update')" size="small" />
+        <el-color-picker v-model="propsConfig[key]" @change="$emit('update')" size="small" show-alpha />
       </template>
       <template v-else-if="getConfigType(key) === 'upload'">
         <el-upload
@@ -89,6 +89,20 @@
       </template>
       <template v-else-if="getConfigType(key) === 'input'">
         <el-input v-model="propsConfig[key]" :placeholder="getConfigPlaceholder(key)" clearable @input="$emit('update')" @change="$emit('update')" size="small" />
+      </template>
+      <template v-else-if="getConfigType(key) === 'css'">
+        <div class="css-config">
+          <div v-for="(cssProp, cssKey) in canvasStore.componentConfigs[componentType]?.[configType][key]?.values" :key="cssKey" class="css-item">
+            <span class="css-label">{{ cssProp.name }}：</span>
+            <template v-if="cssProp.type === 'color'">
+              <el-color-picker 
+                v-model="propsConfig[key][cssProp.key]" 
+                @change="$emit('update')" 
+                size="small" 
+              />
+            </template>
+          </div>
+        </div>
       </template>
       <template v-else-if="getConfigType(key) === 'table-columns'">
         <el-select v-model="propsConfig[key].type" @change="handleSelectChange(key, false)" size="small">
@@ -297,5 +311,19 @@ export default defineComponent({
 .upload-preview {
   max-width: 100%;
   max-height: 100%;
+}
+
+.css-config {
+  margin-left: 20px;
+  display: flex;
+  justify-content:space-around;
+  .css-item {
+    display: flex;
+    align-items: center;
+    
+    .css-label {
+      font-size: 12px;
+    }
+  }
 }
 </style>

@@ -83,6 +83,10 @@
                   canvasStore.canvasStyle = project.canvasStyle || { height: '100%' }
               }
               // project.components[8].styles['--el-table-border-color'] = '#000000'
+              // project.components[8].props['header-cell-style'] = {backgroundColor: '#000000', color: '#ffffff'}
+              // project.components[8].props['row-style'] = {backgroundColor: '#ffffff', color: '#000000'}
+              // project.components[8].props['cell-style'] = {backgroundColor: '#ffffff', color: '#000000'}
+              // project.components[10].styles['backgroundColor'] = '#ffffff'
             }
         }
       

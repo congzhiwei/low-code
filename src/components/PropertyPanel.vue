@@ -42,8 +42,7 @@
         v-if="canvasStore.selectedComponentIndex !== -1" 
         type="danger" 
         size="small" 
-        @click="deleteComponent"
-        style="margin-bottom: 10px;">
+        @click="deleteComponent">
         删除
       </el-button>
     </div>
@@ -252,13 +251,21 @@ export default defineComponent({
     font-weight: bold;
     margin-bottom: 10px;
   }
+  
+  .property-content{
+    overflow-y: auto;
+    height: calc(100% - 125px);
+  }
 
   .property-footer{
     position: absolute;
-    bottom: 10px;
+    bottom: 0;
     left:0;
     width: 100%;
     text-align: center;
+    background: #FFF;
+    padding: 10px 0;
+    box-shadow: 0 -1px 10px rgba(0,0,0,0.1);
   }
 }
 .api-form {

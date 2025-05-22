@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-04-17 15:07:18
  * @LastEditors: zwcong
- * @LastEditTime: 2025-05-22 14:38:33
+ * @LastEditTime: 2025-05-22 15:52:30
  */
 import { defineStore } from 'pinia'
 
@@ -66,6 +66,7 @@ const componentConfigs: Record<string, any> = {
       fontWeight: { name: '字体粗细', type: 'radio', options: ['normal','bold', 'lighter']},
       fontStyle: { name: '字体样式', type: 'radio', options: ['normal','italic']},
       textDecoration: { name: '文本装饰', type: 'radio', options: ['none','underline', 'line-through']},
+      backgroundColor: { name: '背景颜色', type: 'color' },
     }
   },
   'el-button': {
@@ -184,14 +185,13 @@ const componentConfigs: Record<string, any> = {
       data: { name: '数据', type: 'table-data-source' },
       stripe: { name: '是否显示斑马线', type: 'switch' },
       border: { name: '是否显示边框', type: 'switch' },
-      size: { name: '表格大小', type: 'radio', options: ['default', 'small', 'large']}
+      size: { name: '表格大小', type: 'radio', options: ['default', 'small', 'large']},
+      'header-cell-style': { name: '表头样式', type: 'css', values: [{name: '背景颜色', type: 'color', key:'backgroundColor'}, {name: '字体颜色', type: 'color', key:'color'}]},
+      'cell-style': { name: '单元格样式', type: 'css', values: [{name: '背景颜色', type: 'color', key:'backgroundColor'}, {name: '字体颜色', type: 'color', key:'color'}]},
     },
     styles: {
       ...sizeStyles,
       '--el-table-border-color': { name: '线条颜色', type: 'color' },
-      'header-row-style': { name: '表头样式', type: 'css', values: [{name: '背景颜色', type: 'color'}, {name: '字体颜色', type: 'color'}]},
-      'row-style': { name: '行样式', type: 'css', values: [{name: '背景颜色', type: 'color'}, {name: '字体颜色', type: 'color'}] },
-      'cell-style': { name: '单元格样式', type: 'css', values: [{name: '背景颜色', type: 'color'}, {name: '字体颜色', type: 'color'}]}
     }
   },
   'van-button': {
@@ -269,7 +269,7 @@ const defaultProps: Record<string, Record<string, any>> = {
   'el-slider': { size: 'default', min: 0, max: 100 },
   'el-image': { src: '', alt: '', fit: 'fill', previewSrcList: [], lazy: false },
   'el-divider': { direction: 'horizontal', contentPosition: 'center', borderStyle: 'solid', placeholder: '' },
-  'el-table': { columns:{ type: 'custom', columns: [], default: undefined }, data:[], stripe: false, border: false, size: 'default' },
+  'el-table': { columns:{ type: 'custom', columns: [], default: undefined }, data:[], stripe: false, border: false, size: 'default', 'header-cell-style': {'backgroundColor': '#FFF', 'color': '#000000'}, 'cell-style': {'backgroundColor': '#FFF', 'color': '#000000'} },
   'van-button': { placeholder: '按钮', type: 'primary', size: 'default', plain: false, text: false, link: false, round: false, disabled: false },
   'van-field': { placeholder: '请输入内容', clearable: true },
   'van-picker': { columns: { type: 'custom', options: [], default: undefined } },
@@ -279,7 +279,7 @@ const defaultProps: Record<string, Record<string, any>> = {
 } as const
 
 const defaultStyles: Record<string, Record<string, any>> = {
-  'el-text': { width: '', height: '', widthUnit: 'px', heightUnit: 'px', color: '#000000', fontSize: '', fontWeight: '', fontStyle: '', textDecoration: ''},
+  'el-text': { width: '', height: '', widthUnit: 'px', heightUnit: 'px', color: '', fontSize: '', fontWeight: '', fontStyle: '', textDecoration: '', backgroundColor: ''},
   'el-button': { width: '', height: '', widthUnit: 'px', heightUnit: 'px', color: ''},
   'el-input': { width: defaultWidths['el-input'], height: '', widthUnit: 'px', heightUnit: 'px'},
   'el-select': { width: defaultWidths['el-select'], height: '', widthUnit: 'px', heightUnit: 'px' },
@@ -288,14 +288,14 @@ const defaultStyles: Record<string, Record<string, any>> = {
   'el-switch': { width: '', height: '', widthUnit: 'px', heightUnit: 'px'},
   'el-slider': { width: defaultWidths['el-slider'], height: '', widthUnit: 'px', heightUnit: 'px' },
   'el-image': { width: defaultWidths['el-image'], height: 100, widthUnit: 'px', heightUnit: 'px' },
-  'el-divider': { width: defaultWidths['el-divider'], height: '', widthUnit: 'px', heightUnit: 'px', borderColor: '#000000' },
-  'el-table': { width: defaultWidths['el-table'], height: '', widthUnit: 'px', heightUnit: 'px', '--el-table-border-color': '#000000', 'header-row-style': '', 'row-style': '', 'cell-style': ''},
+  'el-divider': { width: defaultWidths['el-divider'], height: '', widthUnit: 'px', heightUnit: 'px', borderColor: '' },
+  'el-table': { width: defaultWidths['el-table'], height: '', widthUnit: 'px', heightUnit: 'px', '--el-table-border-color': ''},
   'van-button': { width: 60, height: '', widthUnit: 'px', heightUnit: 'px' },
   'van-field': { width: defaultWidths['van-field'], height: '', widthUnit: 'px', heightUnit: 'px' },
   'van-picker': { width: defaultWidths['van-picker'], height: '', widthUnit: 'px', heightUnit: 'px' },
   'van-checkbox': { width: '', height: '', widthUnit: 'px', heightUnit: 'px' },
   'van-radio': { width: '', height: '', widthUnit: 'px', heightUnit: 'px' },
-  'QuestionRenderer': { width: '', height: '', widthUnit: 'px', heightUnit: 'px', color: '#000000', backgroundColor: 'transparent'}
+  'QuestionRenderer': { width: '', height: '', widthUnit: 'px', heightUnit: 'px', color: '', backgroundColor: 'transparent'}
 } as const
 
 export interface Project {
