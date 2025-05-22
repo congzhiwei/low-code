@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-04-17 15:07:18
  * @LastEditors: zwcong
- * @LastEditTime: 2025-05-22 15:52:30
+ * @LastEditTime: 2025-05-22 17:00:56
  */
 import { defineStore } from 'pinia'
 
@@ -78,7 +78,7 @@ const componentConfigs: Record<string, any> = {
       text: { name: '是否文字按钮', type:'switch' },
       link: { name: '是否链接按钮', type:'switch' },
       round: { name: '是否圆角按钮', type:'switch' },
-      disabled: { name: '是否禁用', type:'switch' }
+      // disabled: { name: '是否禁用', type:'switch' }   todo 禁用以后选中不了了
     },
     styles: {
       ...sizeStyles,
@@ -260,7 +260,7 @@ const componentConfigs: Record<string, any> = {
 
 const defaultProps: Record<string, Record<string, any>> = {
   'el-text': { placeholder: '文本内容', type: 'default', size: 'default', },
-  'el-button': { placeholder: '按钮', type: 'primary', size: 'default', plain: false, text: false, link: false, round: false, disabled: false },
+  'el-button': { placeholder: '按钮', type: 'primary', size: 'default', plain: false, text: false, link: false, round: false},
   'el-input': { placeholder: '请输入内容', clearable: true },
   'el-select': { placeholder: '请选择', clearable: true, options: { type: 'custom', options: [], default: undefined } },
   'el-checkbox': { label: '选项', disabled: false },

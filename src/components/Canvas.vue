@@ -2,14 +2,13 @@
   <main 
     class="canvas-container" 
     @click="handleCanvasClick"
-    @dragover="handleDragOver"
-    @drop="handleDrop"
   >
     <div class="canvas" ref="canvas" 
         @drop="handleDrop" 
         @dragover="handleDragOver"
         :style="canvasStyle">
         <component 
+            v-if="components.length > 0"
             v-for="(component, index) in components" 
             class="component-wrapper"
             :key="index"
@@ -50,6 +49,7 @@
               />
             </template> 
         </component>
+        <div v-else class="tips">请拖动左侧组件到此</div>
     </div>
   </main>
 </template>
@@ -269,5 +269,12 @@ export default defineComponent({
   top: 10px;
   right: 10px;
   z-index: 100;
+}
+.tips {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 12px;
+  transform: translate(-50%, -50%);
 }
 </style>
