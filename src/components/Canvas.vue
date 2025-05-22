@@ -81,12 +81,16 @@ export default defineComponent({
           const { width, height, ...rest } = canvasStore.canvasStyle;
           return { width: '375px', height: '667px', ...rest };
         }
+        console.log('canvasStyle', canvasStore.canvasStyle)
         return canvasStore.canvasStyle;
       },
       set: (value) => {
         canvasStore.canvasStyle = value;
       }
     });
+
+    
+
     const canvasStore = useCanvasStore();
     const canvas = ref<HTMLElement | null>(null);
     

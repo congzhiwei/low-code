@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-04-17 15:07:18
  * @LastEditors: zwcong
- * @LastEditTime: 2025-05-21 18:30:12
+ * @LastEditTime: 2025-05-22 14:38:33
  */
 import { defineStore } from 'pinia'
 
@@ -174,17 +174,6 @@ const componentConfigs: Record<string, any> = {
   },
   'el-table': {
     props: {
-      // data: { name: '数据', type: 'table-data' },
-      // columns: { name: '列配置', type: 'table-columns' },
-
-      // tableData: { name: '数据配置', type: 'table-data', options: [{
-      //     label: '自定义',
-      //     value: 'custom'
-      //   },{
-      //     label: '关联数据',
-      //     value: 'related'
-      //   }] 
-      // },
       columns: { name: '列配置', type: 'table-columns', options: [{
         label: '自定义',
         value: 'custom'
@@ -193,14 +182,16 @@ const componentConfigs: Record<string, any> = {
         value: 'related'
       }] },
       data: { name: '数据', type: 'table-data-source' },
-
       stripe: { name: '是否显示斑马线', type: 'switch' },
       border: { name: '是否显示边框', type: 'switch' },
       size: { name: '表格大小', type: 'radio', options: ['default', 'small', 'large']}
     },
     styles: {
       ...sizeStyles,
-      borderColor: { name: '线条颜色', type: 'color' },
+      '--el-table-border-color': { name: '线条颜色', type: 'color' },
+      'header-row-style': { name: '表头样式', type: 'css', values: [{name: '背景颜色', type: 'color'}, {name: '字体颜色', type: 'color'}]},
+      'row-style': { name: '行样式', type: 'css', values: [{name: '背景颜色', type: 'color'}, {name: '字体颜色', type: 'color'}] },
+      'cell-style': { name: '单元格样式', type: 'css', values: [{name: '背景颜色', type: 'color'}, {name: '字体颜色', type: 'color'}]}
     }
   },
   'van-button': {
@@ -298,7 +289,7 @@ const defaultStyles: Record<string, Record<string, any>> = {
   'el-slider': { width: defaultWidths['el-slider'], height: '', widthUnit: 'px', heightUnit: 'px' },
   'el-image': { width: defaultWidths['el-image'], height: 100, widthUnit: 'px', heightUnit: 'px' },
   'el-divider': { width: defaultWidths['el-divider'], height: '', widthUnit: 'px', heightUnit: 'px', borderColor: '#000000' },
-  'el-table': { width: defaultWidths['el-table'], height: '', widthUnit: 'px', heightUnit: 'px' },
+  'el-table': { width: defaultWidths['el-table'], height: '', widthUnit: 'px', heightUnit: 'px', '--el-table-border-color': '#000000', 'header-row-style': '', 'row-style': '', 'cell-style': ''},
   'van-button': { width: 60, height: '', widthUnit: 'px', heightUnit: 'px' },
   'van-field': { width: defaultWidths['van-field'], height: '', widthUnit: 'px', heightUnit: 'px' },
   'van-picker': { width: defaultWidths['van-picker'], height: '', widthUnit: 'px', heightUnit: 'px' },

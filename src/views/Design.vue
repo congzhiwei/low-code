@@ -79,7 +79,10 @@
                   canvasStore.selectedComponent = project.selectedComponent
                   canvasStore.currentView = project.viewType
                   canvasStore.projectName = project.name
+                  // 添加这行代码来设置画布高度
+                  canvasStore.canvasStyle = project.canvasStyle || { height: '100%' }
               }
+              // project.components[8].styles['--el-table-border-color'] = '#000000'
             }
         }
       
