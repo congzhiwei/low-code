@@ -90,6 +90,7 @@ export default defineComponent({
       }).then(() => {
         const updatedProjects = projects.value.filter(p => p.id !== id);
         projects.value = updatedProjects;
+
         localStorage.setItem('projects', JSON.stringify(updatedProjects));
         proxy.$message.success('删除成功');
       }).catch(() => {
@@ -111,6 +112,7 @@ export default defineComponent({
             viewType: project.viewType || config.defaultView,
             components: project.components || [],
             selectedComponent: project.selectedComponent || null,
+            canvasStyle: project.canvasStyle || null
           }));
         } catch (e) {
           console.error('解析项目数据失败:', e);

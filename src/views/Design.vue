@@ -92,6 +92,9 @@
       
       const saveCanvas = () => {
         const projectId = route.query.projectId as string;
+
+        console.log('canvasStore', canvasStore)
+
         const canvasData = {
           id: projectId || Date.now().toString(),
           name: canvasStore.projectName || '我的项目',
