@@ -212,6 +212,7 @@ export default defineComponent({
   flex: 0 0 auto;
   overflow: auto;
   position: relative;
+  margin: 0 auto;
   
   &.pc {
     background-color: #f5f5f5;

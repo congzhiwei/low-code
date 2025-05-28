@@ -6,6 +6,7 @@
 - 可视化画布设计（实时布局调整）
 - 项目全生命周期管理（创建/编辑/预览/删除）
 - 组件属性动态配置（样式/交互参数设置）
+- 各别组件支持调用API来实现数据渲染
 
 ## 二、技术栈清单
 | 分类       | 技术/工具               | 版本       | 说明                  |
@@ -195,3 +196,4 @@ const defaultStyles: Record<string, Record<string, any>> = {
 在组件库面板（ src/components/ComponentLibrary.vue ）的网格中添加新组件的展示项，确保用户可从左侧组件库拖拽使用。
 #### 6. 适配属性面板（ PropertyPanel.vue ）
 若新组件需要特殊属性配置逻辑（如复杂交互），需在属性面板（ src/components/PropertyPanel.vue ）中添加对应类型的处理逻辑。
+
