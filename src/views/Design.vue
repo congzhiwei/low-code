@@ -38,10 +38,10 @@
   import { useRoute, useRouter } from 'vue-router'
   import dayjs from 'dayjs'
   import { useCanvasStore } from '../stores/canvas'
-  import Header from '../components/Header.vue'
-  import ComponentLibrary from '../components/ComponentLibrary.vue'
-  import Canvas from '../components/Canvas.vue'
-  import PropertyPanel from '../components/PropertyPanel.vue'
+  import Header from '../components/Layout/Header.vue'
+  import ComponentLibrary from '../components/Layout/ComponentLibrary.vue'
+  import Canvas from '../components/Layout/Canvas.vue'
+  import PropertyPanel from '../components/Layout/PropertyPanel.vue'
   import config from '../config'
   
   export default defineComponent({

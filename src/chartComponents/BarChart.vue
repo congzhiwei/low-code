@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-29 15:23:11
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-04 15:07:56
+ * @LastEditTime: 2025-06-04 16:12:58
 -->
 <template>
     <div>
@@ -55,10 +55,10 @@ const props = defineProps({
     //     type: Array,
     //     default: () => ['A', 'B', 'C']
     // },
-    seriesName: {
-        type: String,
-        default: '数据'
-    },
+    // seriesName: {
+    //     type: String,
+    //     default: '数据'
+    // },
     seriesRadius: {
         type: String,
         default: '50%'
@@ -82,6 +82,10 @@ const props = defineProps({
     emphasisItemShadowColor: {
         type: String,
         default: 'rgba(0, 0, 0, 0.5)'
+    },
+    rowTitles: {
+        type: Array,
+        default: () => []
     }
 })
 
@@ -110,7 +114,8 @@ const option = computed(() => {
             data: props.columns.columns.map(item=> item.label)
         },
         series: props.data.map((item, index) => ({
-            name: props.seriesName,
+            // name: props.seriesName,
+            name: props.rowTitles[index],
             type: 'bar',
             radius: props.seriesRadius,
             center: props.seriesCenter,

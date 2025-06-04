@@ -3,8 +3,9 @@
  * @Author: zwcong
  * @Date: 2025-04-17 15:07:18
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-04 14:58:15
+ * @LastEditTime: 2025-06-04 16:26:50
  */
+import { columns } from 'element-plus/es/components/table-v2/src/common'
 import { defineStore } from 'pinia'
 
 export interface Component {
@@ -47,6 +48,50 @@ const defaultWidths: Record<string, any> = {
   'c-bar-chart': 300,
   'QuestionRenderer': (viewType: 'pc' | 'mobile') => viewType === 'pc' ? 400 : 365
 } as const
+
+const defaultData = {
+  'c-bar-chart': {
+    columns: [
+        {
+            "label": "中国",
+            "prop": "a"
+        },
+        {
+            "label": "美国",
+            "prop": "b"
+        },
+        {
+            "label": "法国",
+            "prop": "c"
+        },
+        {
+            "label": "英国",
+            "prop": "d"
+        },
+        {
+            "label": "德国",
+            "prop": "e"
+        }
+    ],
+    data: [
+      {
+          "a": "100",
+          "b": "90",
+          "c": "40",
+          "d": "33",
+          "e": "45",
+      },
+      {
+          "a": "100",
+          "b": "80",
+          "c": "33",
+          "d": "43",
+          "e": "44",
+      }
+    ],
+    rowTitles: ['2024', '2025']
+  }
+}
 
 const unitOptions = ['px', '%'] as const
 
@@ -176,8 +221,8 @@ const componentConfigs: Record<string, any> = {
   },
   'el-table': {
     props: {
-      columns: { name: '列配置', type: 'table-columns', options: dataOptions },
-      data: { name: '数据', type: 'table-data-source' },
+      columns: { name: '列配置', type: 'columns', options: dataOptions },
+      data: { name: '数据', type: 'row' },
       stripe: { name: '是否显示斑马线', type: 'switch' },
       border: { name: '是否显示边框', type: 'switch' },
       size: { name: '表格大小', type: 'radio', options: ['default', 'small', 'large']},
@@ -271,10 +316,10 @@ const componentConfigs: Record<string, any> = {
       legendOrient: { name: '图例方向', type: 'radio', options: ['vertical', 'horizontal']},
       legendAlign: { name: '图例对齐方式', type: 'radio', options: ['left','center', 'right']},
       legendData: { name: '图例数据', type: 'input' },
-      columns: { name: '轴数据', type: 'table-columns', options: dataOptions },
-      data: { name: '数据', type: 'table-data-source' },
+      columns: { name: '轴数据', type: 'columns', options: dataOptions },
+      data: { name: '数据', type: 'row' },
       // yAxisData: { name: 'Y轴数据', type: 'table-columns', options: dataOptions },
-      seriesName: { name: '数据标题', type: 'input' },
+      // seriesName: { name: '数据标题', type: 'input' },
       seriesRadius: { name: '图例半径', type: 'input' },
       // seriesCenter: { name: '图例中心', type: 'input' },
       emphasisItemShadowBlur: { name: '高亮时的阴影模糊大小', type: 'input' },
@@ -331,7 +376,7 @@ const defaultProps: Record<string, Record<string, any>> = {
   'el-slider': { size: 'default', min: 0, max: 100 },
   'el-image': { src: '', alt: '', fit: 'fill', previewSrcList: [], lazy: false },
   'el-divider': { direction: 'horizontal', contentPosition: 'center', borderStyle: 'solid', placeholder: '' },
-  'el-table': { columns: { type: 'custom', columns: [], default: undefined }, data:[], stripe: false, border: false, size: 'default', 'header-cell-style': {'backgroundColor': '#FFF', 'color': '#000000'}, 'cell-style': {'backgroundColor': '#FFF', 'color': '#000000'} },
+  'el-table': { columns: { type: 'custom', columns: [], default: undefined }, data:[], stripe: false, border: false, size: 'default', 'header-cell-style': {'backgroundColor': '#FFF', 'color': '#000000'}, 'cell-style': {'backgroundColor': '#FFF', 'color': '#000000'}, rowTitles: null},
   'van-button': { placeholder: '按钮', type: 'primary', size: 'default', plain: false, text: false, link: false, round: false, disabled: false },
   'van-field': { placeholder: '请输入内容', clearable: true },
   'van-picker': { columns: { type: 'custom', options: [], default: undefined } },
@@ -339,7 +384,7 @@ const defaultProps: Record<string, Record<string, any>> = {
   'van-radio': { name: '选项' },
   'c-pie-chart': { data: []},
   'c-line-chart': { data: []},
-  'c-bar-chart': { title: '柱状图', titleAlign: 'center', tooltipTrigger: 'item', tooltipFormatter: '', legendOrient: 'horizontal', legendAlign: 'left', legendData: [], columns: { type: 'custom', columns: [], default: undefined }, data: [], seriesName: '', seriesRadius: '', seriesCenter: '', emphasisItemShadowBlur: 10, emphasisItemShadowOffsetX: 0, emphasisItemShadowColor: '#000'},
+  'c-bar-chart': { title: '柱状图', titleAlign: 'center', tooltipTrigger: 'item', tooltipFormatter: '', legendOrient: 'horizontal', legendAlign: 'left', legendData: [], columns: { type: 'custom', columns: defaultData['c-bar-chart'].columns , default: undefined }, data: defaultData['c-bar-chart'].data, seriesRadius: '', seriesCenter: '', emphasisItemShadowBlur: 10, emphasisItemShadowOffsetX: 0, emphasisItemShadowColor: '#000', rowTitles: defaultData['c-bar-chart'].rowTitles},
   'QuestionRenderer': { questionIds: '5429b0311d5541d198357282fd4d70cf', hideDifficulty: false, hideSource: false, queIndex: '', analyzeVersion: 0 }
 } as const
 
