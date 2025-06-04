@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-16 15:06:15
  * @LastEditors: zwcong
- * @LastEditTime: 2025-05-21 17:16:35
+ * @LastEditTime: 2025-06-04 14:37:18
 -->
 <template>
   <div>
@@ -74,9 +74,7 @@ export default defineComponent({
       this.$emit('update:propValue', this.propValue);
     },
     addColumn() {
-      // if (!this.propValue.columns) {
-      //   this.propValue.columns = [];
-      // }
+      console.log('this.propValue', this.propValue)
       this.propValue.columns.push({
         label: '',
         prop: ''

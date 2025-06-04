@@ -286,8 +286,12 @@ export default defineComponent({
     width: 100%;
     text-align: center;
     background: #FFF;
-    padding: 10px 0;
+    // padding: 10px 0;
     box-shadow: 0 -1px 10px rgba(0,0,0,0.1);
+
+    .el-button{
+      margin: 10px 0;
+    }
   }
 }
 .api-form {

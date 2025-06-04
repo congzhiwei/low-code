@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-04-17 16:02:49
  * @LastEditors: zwcong
- * @LastEditTime: 2025-05-16 14:15:53
+ * @LastEditTime: 2025-05-29 16:49:48
 -->
 <template>
   <aside class="component-library">
@@ -54,6 +54,18 @@
           <div class="component-item" draggable="true" @dragstart="(e) => startDrag('el-table', e)">
             <el-icon><Grid /></el-icon>
             <span>表格</span>
+          </div>
+          <div class="component-item" draggable="true" @dragstart="(e) => startDrag('c-pie-chart', e)">
+            <el-icon><Grid /></el-icon>
+            <span>饼图</span>
+          </div>
+          <div class="component-item" draggable="true" @dragstart="(e) => startDrag('c-line-chart', e)">
+            <el-icon><Grid /></el-icon>
+            <span>线型图</span>
+          </div>
+          <div class="component-item" draggable="true" @dragstart="(e) => startDrag('c-bar-chart', e)">
+            <el-icon><Grid /></el-icon>
+            <span>柱图</span>
           </div>
         </div>
         <div v-else class="component-grid">

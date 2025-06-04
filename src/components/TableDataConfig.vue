@@ -56,7 +56,6 @@ export default defineComponent({
   emits: ['update:propValue'],
   methods: {
     updateProps() {
-        console.log('this.propValue', this.propValue)
       this.$emit('update:propValue', this.propValue);
     },
     addRow() {
@@ -68,14 +67,6 @@ export default defineComponent({
         })
         return;
       }
-      console.log('this.propValue', this.propValue)
-    //   if (!this.propValue.dataSource) {
-    //     this.propValue.dataSource = [];
-    //   }
-    //   const newRow: TableRow = {};
-    //   this.propValue.columns?.forEach((col:any) => {
-    //     newRow[col.prop] = '';
-    //   });
 
       const newRow: TableRow = {};
       this.columns.forEach((col:any) => {

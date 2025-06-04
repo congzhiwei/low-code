@@ -3,13 +3,13 @@
  * @Author: zwcong
  * @Date: 2025-04-17 14:59:18
  * @LastEditors: zwcong
- * @LastEditTime: 2025-05-08 14:47:32
+ * @LastEditTime: 2025-05-29 16:26:51
  */
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
-import { elementPlusComponents, vantComponents, customComponents } from './ui-config'
+import { elementPlusComponents, vantComponents, customComponents, echartsComponents } from './ui-config'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import axios from 'axios'
@@ -40,6 +40,20 @@ Object.entries(customComponents).forEach(([name, component]) => {
   if (component.name) {
     app.component(component.name, component)
   }
+})
+
+// 全局注册Echarts组件
+Object.entries(echartsComponents).forEach(([name, component]) => {
+  console.log('component', component, name)
+  if (component.name) {
+    if(component.name === 'echarts'){
+      app.component('v-chart', component)
+    }else{
+      app.component(component.name, component)
+    }
+    
+  }
+
 })
 
 // 全局注册Element Plus图标组件

@@ -95,6 +95,36 @@ export default defineComponent({
       }
     });
 
+    const option =  ref({
+        title: {
+            text: 'Bar Chart',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+            orient: 'horizontal',
+            align: 'left',
+            data: ['数据1', '数据2', '数据3']
+        },
+        xAxis: { // 新增 xAxis 配置
+            type: 'value'
+        },
+        yAxis: { // 新增 yAxis 配置（数值轴）
+            type: 'category',
+            data: ['类别1', '类别2', '类别3'] // 定义 x 轴类目（与 series.data 长度一致）
+        },
+        series: [
+            {
+                name: '数据',
+                type: 'bar',
+                data: [10, 20, 30]
+            }
+        ]
+      })
+
     
 
     const canvasStore = useCanvasStore();
@@ -242,7 +272,8 @@ export default defineComponent({
       canvasStyle,
       componentDefaultValues,
       componentStyles,
-      handleCanvasClick
+      handleCanvasClick,
+      option
     };
   }
 });

@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-04-17 15:07:18
  * @LastEditors: zwcong
- * @LastEditTime: 2025-05-22 17:00:56
+ * @LastEditTime: 2025-06-04 14:58:15
  */
 import { defineStore } from 'pinia'
 
@@ -42,6 +42,9 @@ const defaultWidths: Record<string, any> = {
   'van-picker': 180,
   'van-checkbox': 16,
   'van-radio': 16,
+  'c-pie-chart': 200,
+  'c-line-chart': 200,
+  'c-bar-chart': 300,
   'QuestionRenderer': (viewType: 'pc' | 'mobile') => viewType === 'pc' ? 400 : 365
 } as const
 
@@ -51,6 +54,11 @@ const sizeStyles = {
   width: { name: '宽度(px)', type: 'input-select', options: unitOptions, key: 'widthUnit' },
   height: { name: '高度(px)', type: 'input-select', options: unitOptions, key: 'heightUnit' },
 }
+
+const dataOptions = [
+  { label: '自定义', value: 'custom' },
+  { label: '关联数据', value: 'related' }
+]
 
 const componentConfigs: Record<string, any> = {
   'el-text': {
@@ -98,14 +106,7 @@ const componentConfigs: Record<string, any> = {
     props: {
       placeholder: { name: '占位文本', type: 'input' },
       clearable: { name: '可清除', type: 'switch' },
-      options: { name: '选项', type: 'select-options', options: [{
-          label: '自定义',
-          value: 'custom'
-        },{
-          label: '关联数据',
-          value: 'related'
-        }] 
-      }
+      options: { name: '选项', type: 'select-options', options: dataOptions },
     },
     styles: {
       ...sizeStyles,
@@ -175,13 +176,7 @@ const componentConfigs: Record<string, any> = {
   },
   'el-table': {
     props: {
-      columns: { name: '列配置', type: 'table-columns', options: [{
-        label: '自定义',
-        value: 'custom'
-      },{
-        label: '关联数据',
-        value: 'related'
-      }] },
+      columns: { name: '列配置', type: 'table-columns', options: dataOptions },
       data: { name: '数据', type: 'table-data-source' },
       stripe: { name: '是否显示斑马线', type: 'switch' },
       border: { name: '是否显示边框', type: 'switch' },
@@ -242,6 +237,73 @@ const componentConfigs: Record<string, any> = {
       ...sizeStyles,
     }
   },
+  'c-pie-chart': {
+    props: {
+    },
+    styles: {
+     ...sizeStyles,
+    }
+  },
+  'c-line-chart': {
+    props: {
+    },
+    styles: {
+    ...sizeStyles,
+    }
+  },
+  'c-bar-chart': {
+    props: {
+      /**
+       * columns: { name: '列配置', type: 'table-columns', options: [{
+        label: '自定义',
+        value: 'custom'
+      },{
+        label: '关联数据',
+        value: 'related'
+      }] },
+      data: { name: '数据', type: 'table-data-source' },
+       */
+
+      title: { name: '标题', type: 'input' },
+      titleAlign: { name: '标题对齐方式', type: 'radio', options: ['left','center', 'right']},
+      tooltipTrigger: { name: '提示框触发方式', type: 'radio', options: ['item','axis']},
+      tooltipFormatter: { name: '提示框内容格式', type: 'input' },
+      legendOrient: { name: '图例方向', type: 'radio', options: ['vertical', 'horizontal']},
+      legendAlign: { name: '图例对齐方式', type: 'radio', options: ['left','center', 'right']},
+      legendData: { name: '图例数据', type: 'input' },
+      columns: { name: '轴数据', type: 'table-columns', options: dataOptions },
+      data: { name: '数据', type: 'table-data-source' },
+      // yAxisData: { name: 'Y轴数据', type: 'table-columns', options: dataOptions },
+      seriesName: { name: '数据标题', type: 'input' },
+      seriesRadius: { name: '图例半径', type: 'input' },
+      // seriesCenter: { name: '图例中心', type: 'input' },
+      emphasisItemShadowBlur: { name: '高亮时的阴影模糊大小', type: 'input' },
+      emphasisItemShadowOffsetX: { name: '高亮时的阴影水平偏移', type: 'input' },
+      emphasisItemShadowColor: { name: '高亮时的阴影颜色', type: 'color' },
+
+      // option: {
+      //   title: {
+      //     text: 'ECharts 入门示例'
+      //   },
+      //   tooltip: {},
+      //   legend: {
+      //     data: ['销量']
+      //   },
+      //   xAxis: {
+      //     data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+      //   },
+      //   yAxis: {},
+      //   series: [{
+      //     name: '销量',
+      //     type: 'bar',
+      //     data: [5, 20, 36, 10, 10, 20]
+      //   }]
+      // }
+    },
+    styles: {
+      ...sizeStyles,
+    }
+  },
   'QuestionRenderer': {
     props: {
       questionIds: { name: '题目ID', type: 'input', placeholder: '多个ID用英文逗号分隔'},
@@ -269,12 +331,15 @@ const defaultProps: Record<string, Record<string, any>> = {
   'el-slider': { size: 'default', min: 0, max: 100 },
   'el-image': { src: '', alt: '', fit: 'fill', previewSrcList: [], lazy: false },
   'el-divider': { direction: 'horizontal', contentPosition: 'center', borderStyle: 'solid', placeholder: '' },
-  'el-table': { columns:{ type: 'custom', columns: [], default: undefined }, data:[], stripe: false, border: false, size: 'default', 'header-cell-style': {'backgroundColor': '#FFF', 'color': '#000000'}, 'cell-style': {'backgroundColor': '#FFF', 'color': '#000000'} },
+  'el-table': { columns: { type: 'custom', columns: [], default: undefined }, data:[], stripe: false, border: false, size: 'default', 'header-cell-style': {'backgroundColor': '#FFF', 'color': '#000000'}, 'cell-style': {'backgroundColor': '#FFF', 'color': '#000000'} },
   'van-button': { placeholder: '按钮', type: 'primary', size: 'default', plain: false, text: false, link: false, round: false, disabled: false },
   'van-field': { placeholder: '请输入内容', clearable: true },
   'van-picker': { columns: { type: 'custom', options: [], default: undefined } },
   'van-checkbox': { name: '选项' },
   'van-radio': { name: '选项' },
+  'c-pie-chart': { data: []},
+  'c-line-chart': { data: []},
+  'c-bar-chart': { title: '柱状图', titleAlign: 'center', tooltipTrigger: 'item', tooltipFormatter: '', legendOrient: 'horizontal', legendAlign: 'left', legendData: [], columns: { type: 'custom', columns: [], default: undefined }, data: [], seriesName: '', seriesRadius: '', seriesCenter: '', emphasisItemShadowBlur: 10, emphasisItemShadowOffsetX: 0, emphasisItemShadowColor: '#000'},
   'QuestionRenderer': { questionIds: '5429b0311d5541d198357282fd4d70cf', hideDifficulty: false, hideSource: false, queIndex: '', analyzeVersion: 0 }
 } as const
 
@@ -295,6 +360,9 @@ const defaultStyles: Record<string, Record<string, any>> = {
   'van-picker': { width: defaultWidths['van-picker'], height: '', widthUnit: 'px', heightUnit: 'px' },
   'van-checkbox': { width: '', height: '', widthUnit: 'px', heightUnit: 'px' },
   'van-radio': { width: '', height: '', widthUnit: 'px', heightUnit: 'px' },
+  'c-pie-chart': { width: defaultWidths['c-pie-chart'], height: 200, widthUnit: 'px', heightUnit: 'px' }, 
+  'c-line-chart': { width: defaultWidths['c-line-chart'], height: 200, widthUnit: 'px', heightUnit: 'px' },
+  'c-bar-chart': { width: defaultWidths['c-bar-chart'], height: 200, widthUnit: 'px', heightUnit: 'px' },
   'QuestionRenderer': { width: '', height: '', widthUnit: 'px', heightUnit: 'px', color: '', backgroundColor: 'transparent'}
 } as const
 
