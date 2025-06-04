@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-04-17 15:07:18
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-04 16:26:50
+ * @LastEditTime: 2025-06-04 16:34:56
  */
 import { columns } from 'element-plus/es/components/table-v2/src/common'
 import { defineStore } from 'pinia'
@@ -457,11 +457,9 @@ export const useCanvasStore = defineStore('canvas', {
       this.selectedComponent = this.components[index]
     },
     updateComponentProps(index: number, props: Record<string, any>) {
-      if (index >= 0 && index < this.components.length) {
+      if (index >= 0 && index < this.components.length && this.components[index]) {
         this.components[index].props = {...props}
         this.components = [...this.components]
-
-        console.log('this.components[index].props', this.components[index].props)
       }
     },
     
@@ -512,7 +510,7 @@ export const useCanvasStore = defineStore('canvas', {
       }
     },
     updateComponentStyles(index: number, styles: Record<string, any>) {
-      if (index >= 0 && index < this.components.length) {
+      if (index >= 0 && index < this.components.length && this.components[index]) {
         this.components[index].styles = {...styles}
         this.components = [...this.components]
       }
