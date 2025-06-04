@@ -12,13 +12,6 @@
           @start-drag="startDrag"
         />
   
-        <!-- <Canvas 
-          :components="canvasStore.components"
-          :currentView="currentView"
-          @drop="handleDrop"
-          @dragover="handleDragOver"
-          ref="canvas"
-        /> -->
         <Canvas 
           :components="canvasStore.components"
           :currentView="currentView"

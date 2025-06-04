@@ -3,95 +3,12 @@
  * @Author: zwcong
  * @Date: 2025-04-17 15:07:18
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-04 16:34:56
+ * @LastEditTime: 2025-06-04 17:25:27
  */
-import { columns } from 'element-plus/es/components/table-v2/src/common'
 import { defineStore } from 'pinia'
-
-export interface Component {
-  type: string
-  x: number
-  y: number
-  // width: number
-  props: Record<string, any>
-  styles: Record<string, any>
-  events: Record<string, any>
-}
-
-export interface CanvasStyle {
-  width: string
-  height: string
-  margin: string
-  backgroundColor: string
-  border: string
-  boxShadow: string
-}
-
-const defaultWidths: Record<string, any> = {
-  'el-text': 80,
-  'el-button': 80,
-  'el-input': 200,
-  'el-select': 200,
-  'el-checkbox': 20,
-  'el-radio': 20,
-  'el-slider': 200,
-  'el-image': 100,
-  'el-divider': 200,
-  'el-table': 400,
-  'van-button': 60,
-  'van-field': 180,
-  'van-picker': 180,
-  'van-checkbox': 16,
-  'van-radio': 16,
-  'c-pie-chart': 200,
-  'c-line-chart': 200,
-  'c-bar-chart': 300,
-  'QuestionRenderer': (viewType: 'pc' | 'mobile') => viewType === 'pc' ? 400 : 365
-} as const
-
-const defaultData = {
-  'c-bar-chart': {
-    columns: [
-        {
-            "label": "中国",
-            "prop": "a"
-        },
-        {
-            "label": "美国",
-            "prop": "b"
-        },
-        {
-            "label": "法国",
-            "prop": "c"
-        },
-        {
-            "label": "英国",
-            "prop": "d"
-        },
-        {
-            "label": "德国",
-            "prop": "e"
-        }
-    ],
-    data: [
-      {
-          "a": "100",
-          "b": "90",
-          "c": "40",
-          "d": "33",
-          "e": "45",
-      },
-      {
-          "a": "100",
-          "b": "80",
-          "c": "33",
-          "d": "43",
-          "e": "44",
-      }
-    ],
-    rowTitles: ['2024', '2025']
-  }
-}
+import defaultWidths from './defaultWidths'
+import defaultData from './defaultData'
+import { Component, CanvasStyle, Project } from './types'  // 新增接口导入
 
 const unitOptions = ['px', '%'] as const
 
@@ -410,16 +327,6 @@ const defaultStyles: Record<string, Record<string, any>> = {
   'c-bar-chart': { width: defaultWidths['c-bar-chart'], height: 200, widthUnit: 'px', heightUnit: 'px' },
   'QuestionRenderer': { width: '', height: '', widthUnit: 'px', heightUnit: 'px', color: '', backgroundColor: 'transparent'}
 } as const
-
-export interface Project {
-  id: string
-  name: string
-  components: Component[]
-  createdAt: string
-  updatedAt: string
-  viewType: 'pc' | 'mobile',
-  canvasStyle: CanvasStyle
-}
 
 export const useCanvasStore = defineStore('canvas', {
   state: () => ({
