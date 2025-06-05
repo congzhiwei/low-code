@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: zwcong
+ * @Date: 2025-06-04 16:48:53
+ * @LastEditors: zwcong
+ * @LastEditTime: 2025-06-05 14:52:03
+ */
 const defaultWidths: Record<string, any> = {
   'el-text': 80,
   'el-button': 80,
@@ -14,8 +21,8 @@ const defaultWidths: Record<string, any> = {
   'van-picker': 180,
   'van-checkbox': 16,
   'van-radio': 16,
-  'c-pie-chart': 200,
-  'c-line-chart': 200,
+  'c-pie-chart': 300,
+  'c-line-chart': 300,
   'c-bar-chart': 300,
   'QuestionRenderer': (viewType: 'pc' | 'mobile') => viewType === 'pc' ? 400 : 365
 } as const

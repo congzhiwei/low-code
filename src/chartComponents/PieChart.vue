@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-29 15:23:11
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-05 14:06:42
+ * @LastEditTime: 2025-06-05 14:52:54
 -->
 <template>
     <div>
@@ -14,12 +14,12 @@
 <script setup>
 import { computed} from 'vue'
 defineOptions({
-    name: 'CBarChart'
+    name: 'CPieChart'
 })
 const props = defineProps({
     title: {
         type: String,
-        default: '柱状图'
+        default: '饼图'
     },
     titleAlign: {
         type: String,
@@ -55,14 +55,14 @@ const props = defineProps({
     //     type: Array,
     //     default: () => ['A', 'B', 'C']
     // },
-    // seriesName: {
-    //     type: String,
-    //     default: '数据'
-    // },
-    // seriesRadius: {
-    //     type: String,
-    //     default: '50%'
-    // },
+    seriesName: {
+        type: String,
+        default: '数据'
+    },
+    seriesRadius: {
+        type: String,
+        default: '50%'
+    },
     seriesCenter: {
         type: Array,
         default: () => ['50%', '50%']
@@ -82,15 +82,11 @@ const props = defineProps({
     emphasisItemShadowColor: {
         type: String,
         default: 'rgba(0, 0, 0, 0.5)'
-    },
-    rowTitles: {
-        type: Array,
-        default: () => []
     }
 })
 
 const option = computed(() => {
-    console.log('props', props)
+    console.log('props', props, props.data[0])
     return {
         title: {
             text: props.title,
@@ -105,20 +101,15 @@ const option = computed(() => {
             align: props.legendAlign,
             data: props.legendData
         },
-        xAxis: {
-            type: props.legendOrient === 'vertical' ? 'value' : 'category',
-            data: props.columns.columns.map(item=> item.label)
-        },
-        yAxis: {
-            type: props.legendOrient ==='vertical'? 'category' : 'value',
-            data: props.columns.columns.map(item=> item.label)
-        },
-        series: props.data.map((item, index) => ({
-            name: props.rowTitles[index],
-            type: 'bar',
-            // radius: props.seriesRadius,
-            center: props.seriesCenter,
-            data: Object.values(item),
+        series: [{
+            name: props.seriesName,
+            type: 'pie',
+            radius: props.seriesRadius,
+            // center: props.seriesCenter,
+            data: Object.values(props.data[0]).map((item, index) => ({
+                value: item,
+                name: props.columns.columns[index].label
+            })),
             emphasis: {
                 itemStyle: {
                     shadowBlur: props.emphasisItemShadowBlur,
@@ -126,7 +117,7 @@ const option = computed(() => {
                     shadowColor: props.emphasisItemShadowColor
                 }
             }
-        }))
-    }
+        }
+    ]}
 })
 </script>

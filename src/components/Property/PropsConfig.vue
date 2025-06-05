@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-06 17:40:47
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-04 15:50:11
+ * @LastEditTime: 2025-06-05 14:56:19
 -->
 <template>
   <div>
@@ -131,6 +131,7 @@
               :prop-value="propsConfig[key]"
               :columns="propsConfig.columns.columns"
               :rowTitles="propsConfig.rowTitles"
+              :showAddRow="propsConfig.showAddRow"
               @update:prop-value="(val: any) => { propsConfig[key] = val; $emit('update'); }"
             />
           </div>

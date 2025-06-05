@@ -33,6 +33,7 @@
         </el-table-column>
       </el-table>
       <el-button 
+        v-if="showAddRow"
         type="primary" 
         size="small" 
         @click="addRow"
@@ -62,6 +63,10 @@ export default defineComponent({
     },
     rowTitles: {
       type: Array as () => string[],
+    },
+    showAddRow: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ['update:propValue'],

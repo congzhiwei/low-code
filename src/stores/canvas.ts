@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-04-17 15:07:18
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-04 17:25:27
+ * @LastEditTime: 2025-06-05 14:55:22
  */
 import { defineStore } from 'pinia'
 import defaultWidths from './defaultWidths'
@@ -201,31 +201,6 @@ const componentConfigs: Record<string, any> = {
   },
   'c-pie-chart': {
     props: {
-    },
-    styles: {
-     ...sizeStyles,
-    }
-  },
-  'c-line-chart': {
-    props: {
-    },
-    styles: {
-    ...sizeStyles,
-    }
-  },
-  'c-bar-chart': {
-    props: {
-      /**
-       * columns: { name: '列配置', type: 'table-columns', options: [{
-        label: '自定义',
-        value: 'custom'
-      },{
-        label: '关联数据',
-        value: 'related'
-      }] },
-      data: { name: '数据', type: 'table-data-source' },
-       */
-
       title: { name: '标题', type: 'input' },
       titleAlign: { name: '标题对齐方式', type: 'radio', options: ['left','center', 'right']},
       tooltipTrigger: { name: '提示框触发方式', type: 'radio', options: ['item','axis']},
@@ -242,25 +217,52 @@ const componentConfigs: Record<string, any> = {
       emphasisItemShadowBlur: { name: '高亮时的阴影模糊大小', type: 'input' },
       emphasisItemShadowOffsetX: { name: '高亮时的阴影水平偏移', type: 'input' },
       emphasisItemShadowColor: { name: '高亮时的阴影颜色', type: 'color' },
-
-      // option: {
-      //   title: {
-      //     text: 'ECharts 入门示例'
-      //   },
-      //   tooltip: {},
-      //   legend: {
-      //     data: ['销量']
-      //   },
-      //   xAxis: {
-      //     data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-      //   },
-      //   yAxis: {},
-      //   series: [{
-      //     name: '销量',
-      //     type: 'bar',
-      //     data: [5, 20, 36, 10, 10, 20]
-      //   }]
-      // }
+    },
+    styles: {
+     ...sizeStyles,
+    }
+  },
+  'c-line-chart': {
+    props: {
+      title: { name: '标题', type: 'input' },
+      titleAlign: { name: '标题对齐方式', type: 'radio', options: ['left','center', 'right']},
+      tooltipTrigger: { name: '提示框触发方式', type: 'radio', options: ['item','axis']},
+      tooltipFormatter: { name: '提示框内容格式', type: 'input' },
+      legendOrient: { name: '图例方向', type: 'radio', options: ['vertical', 'horizontal']},
+      legendAlign: { name: '图例对齐方式', type: 'radio', options: ['left','center', 'right']},
+      legendData: { name: '图例数据', type: 'input' },
+      columns: { name: '轴数据', type: 'columns', options: dataOptions },
+      data: { name: '数据', type: 'row' },
+      // yAxisData: { name: 'Y轴数据', type: 'table-columns', options: dataOptions },
+      // seriesName: { name: '数据标题', type: 'input' },
+      seriesRadius: { name: '图例半径', type: 'input' },
+      // seriesCenter: { name: '图例中心', type: 'input' },
+      emphasisItemShadowBlur: { name: '高亮时的阴影模糊大小', type: 'input' },
+      emphasisItemShadowOffsetX: { name: '高亮时的阴影水平偏移', type: 'input' },
+      emphasisItemShadowColor: { name: '高亮时的阴影颜色', type: 'color' },
+    },
+    styles: {
+    ...sizeStyles,
+    }
+  },
+  'c-bar-chart': {
+    props: {
+      title: { name: '标题', type: 'input' },
+      titleAlign: { name: '标题对齐方式', type: 'radio', options: ['left','center', 'right']},
+      tooltipTrigger: { name: '提示框触发方式', type: 'radio', options: ['item','axis']},
+      tooltipFormatter: { name: '提示框内容格式', type: 'input' },
+      legendOrient: { name: '图例方向', type: 'radio', options: ['vertical', 'horizontal']},
+      legendAlign: { name: '图例对齐方式', type: 'radio', options: ['left','center', 'right']},
+      legendData: { name: '图例数据', type: 'input' },
+      columns: { name: '轴数据', type: 'columns', options: dataOptions },
+      data: { name: '数据', type: 'row' },
+      // yAxisData: { name: 'Y轴数据', type: 'table-columns', options: dataOptions },
+      // seriesName: { name: '数据标题', type: 'input' },
+      seriesRadius: { name: '图例半径', type: 'input' },
+      // seriesCenter: { name: '图例中心', type: 'input' },
+      emphasisItemShadowBlur: { name: '高亮时的阴影模糊大小', type: 'input' },
+      emphasisItemShadowOffsetX: { name: '高亮时的阴影水平偏移', type: 'input' },
+      emphasisItemShadowColor: { name: '高亮时的阴影颜色', type: 'color' },
     },
     styles: {
       ...sizeStyles,
@@ -299,8 +301,8 @@ const defaultProps: Record<string, Record<string, any>> = {
   'van-picker': { columns: { type: 'custom', options: [], default: undefined } },
   'van-checkbox': { name: '选项' },
   'van-radio': { name: '选项' },
-  'c-pie-chart': { data: []},
-  'c-line-chart': { data: []},
+  'c-pie-chart': { title: '饼图', titleAlign: 'center', tooltipTrigger: 'item', tooltipFormatter: '', legendOrient: 'horizontal', legendAlign: 'left', legendData: [], columns: { type: 'custom', columns: defaultData['c-pie-chart'].columns , default: undefined }, data: defaultData['c-pie-chart'].data, seriesRadius: '50%', seriesCenter: '', emphasisItemShadowBlur: 10, emphasisItemShadowOffsetX: 0, emphasisItemShadowColor: '#000', rowTitles: null, showAddRow: false},
+  'c-line-chart': { title: '折线图', titleAlign: 'center', tooltipTrigger: 'item', tooltipFormatter: '', legendOrient: 'horizontal', legendAlign: 'left', legendData: [], columns: { type: 'custom', columns: defaultData['c-line-chart'].columns , default: undefined }, data: defaultData['c-line-chart'].data, seriesRadius: '', seriesCenter: '', emphasisItemShadowBlur: 10, emphasisItemShadowOffsetX: 0, emphasisItemShadowColor: '#000', rowTitles: defaultData['c-line-chart'].rowTitles},
   'c-bar-chart': { title: '柱状图', titleAlign: 'center', tooltipTrigger: 'item', tooltipFormatter: '', legendOrient: 'horizontal', legendAlign: 'left', legendData: [], columns: { type: 'custom', columns: defaultData['c-bar-chart'].columns , default: undefined }, data: defaultData['c-bar-chart'].data, seriesRadius: '', seriesCenter: '', emphasisItemShadowBlur: 10, emphasisItemShadowOffsetX: 0, emphasisItemShadowColor: '#000', rowTitles: defaultData['c-bar-chart'].rowTitles},
   'QuestionRenderer': { questionIds: '5429b0311d5541d198357282fd4d70cf', hideDifficulty: false, hideSource: false, queIndex: '', analyzeVersion: 0 }
 } as const

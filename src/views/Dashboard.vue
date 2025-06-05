@@ -45,7 +45,7 @@ import { defineComponent, ref, onMounted, getCurrentInstance } from 'vue';
 import { useRouter } from 'vue-router';
   import dayjs from 'dayjs'
 import { ElCard, ElButton, ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus';
-import { Project } from '../stores/canvas';
+import { Project } from '../stores/types';
 import config from '../config';
 
 export default defineComponent({

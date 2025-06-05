@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-29 15:23:11
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-05 14:06:42
+ * @LastEditTime: 2025-06-05 14:07:30
 -->
 <template>
     <div>
@@ -14,12 +14,12 @@
 <script setup>
 import { computed} from 'vue'
 defineOptions({
-    name: 'CBarChart'
+    name: 'CLineChart'
 })
 const props = defineProps({
     title: {
         type: String,
-        default: '柱状图'
+        default: '折线图'
     },
     titleAlign: {
         type: String,
@@ -115,7 +115,7 @@ const option = computed(() => {
         },
         series: props.data.map((item, index) => ({
             name: props.rowTitles[index],
-            type: 'bar',
+            type: 'line',
             // radius: props.seriesRadius,
             center: props.seriesCenter,
             data: Object.values(item),
