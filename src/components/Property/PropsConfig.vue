@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-06 17:40:47
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-05 14:56:19
+ * @LastEditTime: 2025-06-05 15:16:46
 -->
 <template>
   <div>
@@ -116,7 +116,7 @@
             />
           </el-select>
           <ColumnsConfig 
-            :prop-value="propsConfig[key]" 
+            :prop-value="cloneDeep(propsConfig[key])" 
             :data="propsConfig.data"
             :api-list="apiList"
             @update:prop-value="(val: any) => { propsConfig[key] = val; $emit('update'); }"
@@ -128,8 +128,8 @@
         <template v-else-if="getConfigType(key) === 'row'">
           <div>
             <RowConfig
-              :prop-value="propsConfig[key]"
-              :columns="propsConfig.columns.columns"
+              :prop-value="cloneDeep(propsConfig[key])"
+              :columns="cloneDeep(propsConfig.columns.columns)"
               :rowTitles="propsConfig.rowTitles"
               :showAddRow="propsConfig.showAddRow"
               @update:prop-value="(val: any) => { propsConfig[key] = val; $emit('update'); }"
@@ -166,6 +166,7 @@ import SelectOptionsConfig from './SelectOptionsConfig.vue';
 import RowConfig from './RowConfig.vue';
 import ColumnsConfig from './ColumnsConfig.vue';
 import type { UploadFile } from 'element-plus';
+import { cloneDeep } from 'lodash'
 
 export default defineComponent({
   name: 'PropsConfig',
@@ -247,7 +248,8 @@ export default defineComponent({
       getConfigPlaceholder, 
       handleImageUpload,
       showTableDataDialog,
-      showTableColumnsDialog 
+      showTableColumnsDialog,
+      cloneDeep
     };
   },
   methods: {

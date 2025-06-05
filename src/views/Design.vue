@@ -36,6 +36,7 @@
   import Canvas from '../components/Layout/Canvas.vue'
   import PropertyPanel from '../components/Layout/PropertyPanel.vue'
   import config from '../config'
+  import { cloneDeep } from 'lodash'
   
   export default defineComponent({
     name: 'App',
@@ -93,9 +94,9 @@
           name: canvasStore.projectName || '我的项目',
           updatedAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
           viewType: canvasStore.currentView,
-          components: JSON.parse(JSON.stringify(canvasStore.components)),
-          selectedComponent: JSON.parse(JSON.stringify(canvasStore.selectedComponent)),
-          canvasStyle: JSON.parse(JSON.stringify(canvasStore.canvasStyle))
+          components: cloneDeep(canvasStore.components),
+          selectedComponent: cloneDeep(canvasStore.selectedComponent),
+          canvasStyle: cloneDeep(canvasStore.canvasStyle)
         };
         console.log('保存的画布数据:', canvasData);
         
