@@ -3,20 +3,24 @@
  * @Author: zwcong
  * @Date: 2025-05-29 15:23:11
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-05 14:06:42
+ * @LastEditTime: 2025-06-06 16:20:16
 -->
 <template>
-    <div>
-        <v-chart :option="option" />
+    <div :style="componentStyle">
+        <v-chart :option="option" ref="chartRef" />
     </div>
 </template>
   
 <script setup>
-import { computed} from 'vue'
+import { computed, watch, ref } from 'vue'
 defineOptions({
     name: 'CBarChart'
 })
 const props = defineProps({
+    style: {
+        type: Object,
+        default: () => ({})
+    },
     title: {
         type: String,
         default: '柱状图'
@@ -88,6 +92,14 @@ const props = defineProps({
         default: () => []
     }
 })
+
+const componentStyle = computed(() => props.style)
+const chartRef = ref(null)
+watch(() => props.style, (newStyle) => {
+  if (chartRef.value) {
+    chartRef.value.resize()  // 调用图表库的 resize 方法
+  }
+}, { deep: true })  // 深度监听样式对象变化
 
 const option = computed(() => {
     console.log('props', props)
