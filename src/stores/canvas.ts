@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-04-17 15:07:18
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-05 15:12:55
+ * @LastEditTime: 2025-06-06 14:58:51
  */
 import { defineStore } from 'pinia'
 import defaultWidths from './defaultWidths'
@@ -213,7 +213,11 @@ const componentConfigs: Record<string, any> = {
       data: { name: '数据', type: 'row' },
       // yAxisData: { name: 'Y轴数据', type: 'table-columns', options: dataOptions },
       // seriesName: { name: '数据标题', type: 'input' },
-      seriesRadius: { name: '图例半径', type: 'input' },
+      // seriesRadius: { name: '图例半径', type: 'input' },
+      isShowRoseType: { name: '是否显示为南丁格尔图', type: 'switch'},
+      seriesLabelShow: { name: '是否显示标签', type:'switch'},
+      seriesInsideRadius: { name: '内径', type: 'slider' },
+      seriesOutsideRadius: { name: '外径', type: 'slider' },
       // seriesCenter: { name: '图例中心', type: 'input' },
       emphasisItemShadowBlur: { name: '高亮时的阴影模糊大小', type: 'input' },
       emphasisItemShadowOffsetX: { name: '高亮时的阴影水平偏移', type: 'input' },
@@ -237,6 +241,7 @@ const componentConfigs: Record<string, any> = {
       // yAxisData: { name: 'Y轴数据', type: 'table-columns', options: dataOptions },
       // seriesName: { name: '数据标题', type: 'input' },
       seriesRadius: { name: '图例半径', type: 'input' },
+      isSmooth: { name: '是否平滑', type:'switch'},
       // seriesCenter: { name: '图例中心', type: 'input' },
       emphasisItemShadowBlur: { name: '高亮时的阴影模糊大小', type: 'input' },
       emphasisItemShadowOffsetX: { name: '高亮时的阴影水平偏移', type: 'input' },
@@ -302,9 +307,9 @@ const defaultProps: Record<string, Record<string, any>> = {
   'van-picker': { columns: { type: 'custom', options: [], default: undefined } },
   'van-checkbox': { name: '选项' },
   'van-radio': { name: '选项' },
-  'c-pie-chart': { title: '饼图', titleAlign: 'center', tooltipTrigger: 'item', tooltipFormatter: '', legendOrient: 'horizontal', legendAlign: 'left', legendData: [], columns: { type: 'custom', columns: cloneDeep(defaultData['c-pie-chart'].columns) , default: undefined }, data: cloneDeep(defaultData['c-pie-chart'].data), seriesRadius: '50%', seriesCenter: '', emphasisItemShadowBlur: 10, emphasisItemShadowOffsetX: 0, emphasisItemShadowColor: '#000', rowTitles: null, showAddRow: false},
-  'c-line-chart': { title: '折线图', titleAlign: 'center', tooltipTrigger: 'item', tooltipFormatter: '', legendOrient: 'horizontal', legendAlign: 'left', legendData: [], columns: { type: 'custom', columns: cloneDeep(defaultData['c-line-chart'].columns) , default: undefined }, data: cloneDeep(defaultData['c-line-chart'].data), seriesRadius: '', seriesCenter: '', emphasisItemShadowBlur: 10, emphasisItemShadowOffsetX: 0, emphasisItemShadowColor: '#000', rowTitles: defaultData['c-line-chart'].rowTitles},
-  'c-bar-chart': { title: '柱状图', titleAlign: 'center', tooltipTrigger: 'item', tooltipFormatter: '', legendOrient: 'horizontal', legendAlign: 'left', legendData: [], columns: { type: 'custom', columns: cloneDeep(defaultData['c-bar-chart'].columns) , default: undefined }, data: cloneDeep(defaultData['c-bar-chart'].data), seriesRadius: '', seriesCenter: '', emphasisItemShadowBlur: 10, emphasisItemShadowOffsetX: 0, emphasisItemShadowColor: '#000', rowTitles: defaultData['c-bar-chart'].rowTitles},
+  'c-pie-chart': { title: '饼图', titleAlign: 'center', tooltipTrigger: 'item', tooltipFormatter: '', isShowRoseType: false, seriesLabelShow: true, seriesInsideRadius: 0, seriesOutsideRadius: 50, seriesCenter: '', emphasisItemShadowBlur: 10, emphasisItemShadowOffsetX: 0, emphasisItemShadowColor: '#000', legendData: [],legendOrient: 'horizontal', legendAlign: 'left', columns: { type: 'custom', columns: cloneDeep(defaultData['c-pie-chart'].columns) , default: undefined }, data: cloneDeep(defaultData['c-pie-chart'].data), rowTitles: null, showAddRow: false},
+  'c-line-chart': { title: '折线图', titleAlign: 'center', tooltipTrigger: 'item', tooltipFormatter: '', isSmooth: false , seriesRadius: '', seriesCenter: '', emphasisItemShadowBlur: 10, emphasisItemShadowOffsetX: 0, emphasisItemShadowColor: '#000', legendData: [], legendOrient: 'horizontal', legendAlign: 'left', columns: { type: 'custom', columns: cloneDeep(defaultData['c-line-chart'].columns) , default: undefined }, data: cloneDeep(defaultData['c-line-chart'].data), rowTitles: defaultData['c-line-chart'].rowTitles},
+  'c-bar-chart': { title: '柱状图', titleAlign: 'center', tooltipTrigger: 'item', tooltipFormatter: '', seriesRadius: '', seriesCenter: '', emphasisItemShadowBlur: 10, emphasisItemShadowOffsetX: 0, emphasisItemShadowColor: '#000', legendData: [], legendOrient: 'horizontal', legendAlign: 'left', columns: { type: 'custom', columns: cloneDeep(defaultData['c-bar-chart'].columns) , default: undefined }, data: cloneDeep(defaultData['c-bar-chart'].data),  rowTitles: defaultData['c-bar-chart'].rowTitles},
   'QuestionRenderer': { questionIds: '5429b0311d5541d198357282fd4d70cf', hideDifficulty: false, hideSource: false, queIndex: '', analyzeVersion: 0 }
 } as const
 

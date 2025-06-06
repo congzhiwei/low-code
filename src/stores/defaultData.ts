@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-06-04 17:22:36
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-05 14:57:18
+ * @LastEditTime: 2025-06-06 15:03:26
  */
 
 const columns = [
@@ -51,7 +51,7 @@ const rowTitles = ['2024', '2025']
 const defaultData = {
     'c-pie-chart': {
         columns,
-        data: data.splice(0, 1),
+        data: data.slice(0, 1),
         rowTitles
     },
     'c-line-chart': {

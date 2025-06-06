@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-29 15:23:11
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-05 14:07:30
+ * @LastEditTime: 2025-06-06 14:59:31
 -->
 <template>
     <div>
@@ -50,6 +50,10 @@ const props = defineProps({
         default: () => ({
             columns: ['A', 'B', 'C']
         })
+    },
+    isSmooth: {
+        type: Boolean,
+        default: false
     },
     // yAxisData: {
     //     type: Array,
@@ -117,6 +121,7 @@ const option = computed(() => {
             name: props.rowTitles[index],
             type: 'line',
             // radius: props.seriesRadius,
+            smooth: props.isSmooth,
             center: props.seriesCenter,
             data: Object.values(item),
             emphasis: {

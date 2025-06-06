@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-29 15:23:11
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-05 14:52:54
+ * @LastEditTime: 2025-06-06 14:52:34
 -->
 <template>
     <div>
@@ -59,9 +59,21 @@ const props = defineProps({
         type: String,
         default: '数据'
     },
-    seriesRadius: {
-        type: String,
-        default: '50%'
+    isShowRoseType: {
+        type: Boolean,
+        default: false
+    },
+    seriesInsideRadius: {
+        type: Number,
+        default: 0
+    },
+    seriesOutsideRadius: {
+        type: Number,
+        default: 50
+    },
+    seriesLabelShow: {
+        type: Boolean,
+        default: true
     },
     seriesCenter: {
         type: Array,
@@ -104,8 +116,12 @@ const option = computed(() => {
         series: [{
             name: props.seriesName,
             type: 'pie',
-            radius: props.seriesRadius,
+            radius: [props.seriesInsideRadius, props.seriesOutsideRadius],
             // center: props.seriesCenter,
+            label: {
+                show: props.seriesLabelShow,
+            },
+            roseType: props.isShowRoseType ? 'radius' : '',
             data: Object.values(props.data[0]).map((item, index) => ({
                 value: item,
                 name: props.columns.columns[index].label

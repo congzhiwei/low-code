@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-06 17:40:47
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-05 15:16:46
+ * @LastEditTime: 2025-06-06 15:02:12
 -->
 <template>
   <div>
@@ -130,30 +130,22 @@
             <RowConfig
               :prop-value="cloneDeep(propsConfig[key])"
               :columns="cloneDeep(propsConfig.columns.columns)"
-              :rowTitles="propsConfig.rowTitles"
+              :rowTitles="cloneDeep(propsConfig.rowTitles)"
               :showAddRow="propsConfig.showAddRow"
               @update:prop-value="(val: any) => { propsConfig[key] = val; $emit('update'); }"
             />
           </div>
         </template>
-        <!-- <template v-else-if="getConfigType(key) === 'table-data'">
-          <el-button type="primary" size="small" @click="showTableDataDialog(key)">配置数据</el-button>
-          <TableDataConfig 
-            :prop-value="propsConfig[key]" 
-            :visible="propsConfig[key]?.visible || false"
-            @update:prop-value="(val: any) => { propsConfig[key] = val; $emit('update'); }"
-            @update:visible="(val: boolean) => { propsConfig[key].visible = val; $emit('update'); }"
-          />
+        <template v-else-if="getConfigType(key) === 'slider'">
+          <div class="slider-flex">
+            <el-slider
+              v-model="propsConfig[key]"
+              @change="$emit('update')"
+              size="small"
+            />
+            <div class="slider-value">{{ propsConfig[key] }}%</div>
+          </div>
         </template>
-        <template v-else-if="getConfigType(key) === 'table-columns'">
-          <TableColumnsConfig 
-            :prop-value="propsConfig[key]" 
-            :visible="propsConfig[key]?.visible || false"
-            @update:prop-value="(val: any) => { propsConfig[key] = val; $emit('update'); }"
-            @update:data="(val: any) => { propsConfig.data = val; $emit('update'); }"
-            @show-api-dialog="$emit('show-api-dialog')"
-          />
-        </template> -->
       </div>
     </template>
   </div>
@@ -331,6 +323,21 @@ export default defineComponent({
     .css-label {
       font-size: 12px;
     }
+  }
+}
+.slider-flex{
+  display: flex;
+  padding: 0 20px;
+  font-size: 12px;
+  align-items: center;
+  justify-content: space-between;
+
+  .el-slider{
+    margin-right: 20px;
+  }
+  .slider-value{
+    width: 32px;
+    flex: none;
   }
 }
 </style>
