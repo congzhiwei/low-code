@@ -9,17 +9,14 @@
             @dragover="handleDragOver"
             :style="canvasStyle">
             <template v-if="components.length > 0">
-              <DraggableContainer>
+              <DraggableContainer referenceLineColor="#409eff">
                 <Vue3DraggableResizable 
                   v-for="(component, index) in components" 
                   :key="index"
+                  :parent="true"
                   :x="component.x"
                   :y="component.y"
-                  :initW="component.styles.width"
-                  :initH="component.styles.height"
-                  v-model:w="component.styles.width"
-                  v-model:h="component.styles.height"
-                  :style="{ ...componentStyles[index] }"
+                  :style="{width: component.styles.width+2+'px', height: component.styles.height+2+'px'}"
                   @dragging="startDrag(index, $event)"
                   @resizing="onResize(index, $event)"
                   >
