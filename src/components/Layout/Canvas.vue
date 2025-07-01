@@ -16,7 +16,10 @@
                   :parent="true"
                   :x="component.x"
                   :y="component.y"
-                  :style="{width: component.styles.width+2+'px', height: component.styles.height+2+'px'}"
+                  :initW="component.styles.width"
+                  :initH="component.styles.height"
+                  v-model:w="component.styles.width"
+                  v-model:h="component.styles.height"
                   @dragging="startDrag(index, $event)"
                   @resizing="onResize(index, $event)"
                   >
