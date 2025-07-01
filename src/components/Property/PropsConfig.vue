@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-06 17:40:47
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-06 15:02:12
+ * @LastEditTime: 2025-07-01 16:01:55
 -->
 <template>
   <div>
@@ -120,7 +120,11 @@
             :data="propsConfig.data"
             :api-list="apiList"
             @update:prop-value="(val: any) => { propsConfig[key] = val; $emit('update'); }"
-            @update:data="(val: any) => { propsConfig.data = val; $emit('update'); }"
+            @update:data="(val: any) => { 
+              console.log('update data', val);
+              propsConfig.data = val; 
+              $emit('update'); 
+            }"
             @update:visible="(val: boolean) => { propsConfig[key].visible = val; $emit('update'); }"
             @show-api-dialog="$emit('show-api-dialog')"
           />

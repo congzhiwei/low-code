@@ -3,10 +3,10 @@
  * @Author: zwcong
  * @Date: 2025-04-18 16:21:08
  * @LastEditors: zwcong
- * @LastEditTime: 2025-05-08 14:14:30
+ * @LastEditTime: 2025-07-01 15:48:02
 -->
 <template>
-  <div class="question-renderer">
+  <div class="question-renderer" ref="questionRenderer">
     <div 
       v-for="(ref, index) in questionRefs" 
       :key="index"
@@ -26,9 +26,11 @@ declare const TalqsTemplate: any;
 export default defineComponent({
   name: 'QuestionRenderer',
   setup() {
+    const questionRenderer:any = ref(null);
     const questionRefs:any = ref(null);
     const questionList = ref([]);
     return {
+      questionRenderer,
       questionRefs,
       questionList
     };
@@ -54,6 +56,7 @@ export default defineComponent({
       default: 0
     }
   },
+  emits: ['update:styles'],
   mounted() {
     // this.renderQuestion();
     this.getQuestionInfo()
@@ -131,7 +134,18 @@ export default defineComponent({
           
           nextTick(() => {
             TalqsTemplate.autoLayout();
+
+            //获取所有子元素高度的和
+            let height = 0;
+            this.questionRefs.forEach((el:any) => {
+              if (el) {
+                height += el.offsetHeight + 15;
+              }
+            })
+            // 将高度赋值给属性面板
+            this.$emit('update:styles', {height});
           });
+          
         }
       } catch (error) {
         console.error('试题渲染失败:', error);

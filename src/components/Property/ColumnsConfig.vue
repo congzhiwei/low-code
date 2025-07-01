@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-16 15:06:15
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-04 15:14:11
+ * @LastEditTime: 2025-07-01 15:59:56
 -->
 <template>
   <div>
@@ -120,6 +120,8 @@ export default defineComponent({
       
       // 过滤出有有效字段的列配置
       const validColumns = this.propValue.columns.filter((col:any) => col.prop);
+      console.log('validColumns', validColumns)
+      console.log('this.propValue.apiData', this.propValue.apiData)
       
       // 映射API数据到表格数据
       this.$emit('update:data', this.propValue.apiData.map((item:any) => {
@@ -129,6 +131,7 @@ export default defineComponent({
             row[col.prop] = item[col.prop];
           }
         });
+        console.log('row', row)
         return row;
       }));
     },

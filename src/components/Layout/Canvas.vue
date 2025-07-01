@@ -30,7 +30,9 @@
                       v-bind="component.props"
                       v-model="componentDefaultValues[index]"
                       @click="selectComponent(index)"
-                      @update:props="updateProps">
+                      @update:props="updateProps"
+                      @update:styles="updateStyles"
+                      >
                       <template v-if="component.type === 'el-button' || component.type === 'van-button' || component.type === 'el-text' || component.type === 'el-divider'">
                         {{ component.props.placeholder }}
                       </template>
@@ -220,6 +222,16 @@ export default defineComponent({
       canvasStore.updateComponentProps(index, mergedProps);
       emit('update:props', mergedProps);
     };
+
+    const updateStyles = (newStyles: Record<string, any>) => {
+      const index = canvasStore.selectedComponentIndex;
+      if(index !== -1){
+        console.log('updateStyles', index, newStyles)
+        const currentStyles = props.components[index].styles;
+        const mergedStyles = {...currentStyles,...newStyles};
+        canvasStore.updateComponentStyles(index, mergedStyles);
+      }
+    };
     
     const selectComponent = (index: number) => {
       canvasStore.selectComponent(index)
@@ -304,6 +316,7 @@ export default defineComponent({
       selectComponent,
       // deleteComponent,
       updateProps,
+      updateStyles,
       canvasStyle,
       componentDefaultValues,
       componentStyles,
