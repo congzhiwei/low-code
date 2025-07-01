@@ -24,6 +24,7 @@
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.19",
     "@types/node": "^22.14.1",
     "@types/vue": "^2.0.0",
     "@types/vue-router": "^2.0.0",

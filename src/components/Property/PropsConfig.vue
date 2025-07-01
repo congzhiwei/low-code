@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-06 17:40:47
  * @LastEditors: zwcong
- * @LastEditTime: 2025-07-01 16:01:55
+ * @LastEditTime: 2025-07-01 16:41:13
 -->
 <template>
   <div>
@@ -116,7 +116,7 @@
             />
           </el-select>
           <ColumnsConfig 
-            :prop-value="cloneDeep(propsConfig[key])" 
+            :prop-value="propsConfig[key]" 
             :data="propsConfig.data"
             :api-list="apiList"
             @update:prop-value="(val: any) => { propsConfig[key] = val; $emit('update'); }"
@@ -132,9 +132,9 @@
         <template v-else-if="getConfigType(key) === 'row'">
           <div>
             <RowConfig
-              :prop-value="cloneDeep(propsConfig[key])"
-              :columns="cloneDeep(propsConfig.columns.columns)"
-              :rowTitles="cloneDeep(propsConfig.rowTitles)"
+              :prop-value="propsConfig[key]"
+              :columns="propsConfig.columns.columns"
+              :rowTitles="propsConfig.rowTitles"
               :showAddRow="propsConfig.showAddRow"
               @update:prop-value="(val: any) => { propsConfig[key] = val; $emit('update'); }"
             />

@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-16 15:06:15
  * @LastEditors: zwcong
- * @LastEditTime: 2025-07-01 15:59:56
+ * @LastEditTime: 2025-07-01 17:33:24
 -->
 <template>
   <div>
@@ -48,6 +48,7 @@
 import { defineComponent } from 'vue';
 import service from '../../api/request';
 import ApiSelector from './ApiSelector.vue';
+import { cloneDeep } from 'lodash'
 
 export default defineComponent({
   name: 'TableColumnsConfig',
@@ -117,14 +118,18 @@ export default defineComponent({
     },
     updateTableFromApi() {
       if (!this.propValue.apiData || !this.propValue.columns) return;
+
+      // 深拷贝props数据
+      const apiData = cloneDeep(this.propValue.apiData);
+      const columns = cloneDeep(this.propValue.columns);
       
       // 过滤出有有效字段的列配置
-      const validColumns = this.propValue.columns.filter((col:any) => col.prop);
+      const validColumns = columns.filter((col:any) => col.prop);
       console.log('validColumns', validColumns)
       console.log('this.propValue.apiData', this.propValue.apiData)
       
       // 映射API数据到表格数据
-      this.$emit('update:data', this.propValue.apiData.map((item:any) => {
+      this.$emit('update:data', apiData.map((item:any) => {
         const row:any = {};
         validColumns.forEach((col:any) => {
           if (col.prop && item[col.prop] !== undefined) {

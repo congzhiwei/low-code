@@ -46,6 +46,9 @@ dependencies:
     version: 4.1.0(vue@3.5.17)
 
 devDependencies:
+  '@types/lodash':
+    specifier: ^4.17.19
+    version: 4.17.19
   '@types/node':
     specifier: ^22.14.1
     version: 22.15.34
@@ -525,7 +528,6 @@ packages:
 
   /@types/lodash@4.17.19:
     resolution: {integrity: sha512-NYqRyg/hIQrYPT9lbOeYc3kIRabJDn/k4qQHIXUpx88CBDww2fD15Sg5kbXlW86zm2XEW4g0QxkTI3/Kfkc7xQ==}
-    dev: false
 
   /@types/node@22.15.34:
     resolution: {integrity: sha512-8Y6E5WUupYy1Dd0II32BsWAx5MWdcnRd8L84Oys3veg1YrYtNtzgO4CFhiBg6MDSjk7Ay36HYOnU7/tuOzIzcw==}

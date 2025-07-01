@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-04-17 15:07:18
  * @LastEditors: zwcong
- * @LastEditTime: 2025-07-01 14:59:02
+ * @LastEditTime: 2025-07-01 17:31:53
  */
 import { defineStore } from 'pinia'
 import defaultWidths from './defaultWidths'
@@ -362,8 +362,8 @@ export const useCanvasStore = defineStore('canvas', {
     addComponent(component: Omit<Component, 'props'>) {
       this.components.push({
         ...component,
-        props: defaultProps[component.type] ? {...defaultProps[component.type]} : {},
-        styles: defaultStyles[component.type]? {...defaultStyles[component.type]} : {},
+        props: defaultProps[component.type] ? cloneDeep(defaultProps[component.type]) : {},
+        styles: defaultStyles[component.type] ? cloneDeep(defaultStyles[component.type]) : {},
         events: {}
       })
       console.log('this.components=====', this.components, defaultProps[component.type])
