@@ -20,6 +20,7 @@
     "vue": "^3.4.0",
     "vue-echarts": "^7.0.3",
     "vue-router": "^4.5.0",
+    "vue3-draggable-resizable": "^1.6.5",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {

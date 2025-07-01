@@ -3,15 +3,16 @@
  * @Author: zwcong
  * @Date: 2025-06-04 16:48:53
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-05 14:52:03
+ * @LastEditTime: 2025-07-01 14:33:13
  */
 const defaultWidths: Record<string, any> = {
   'el-text': 80,
   'el-button': 80,
   'el-input': 200,
   'el-select': 200,
-  'el-checkbox': 20,
-  'el-radio': 20,
+  'el-checkbox': 60,
+  'el-radio': 60,
+  'el-switch': 40,
   'el-slider': 200,
   'el-image': 100,
   'el-divider': 200,

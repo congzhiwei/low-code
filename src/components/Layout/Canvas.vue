@@ -3,64 +3,83 @@
     class="canvas-container" 
     @click="handleCanvasClick"
   >
-    <div class="canvas" ref="canvas" 
-        @drop="handleDrop" 
-        @dragover="handleDragOver"
-        :style="canvasStyle">
-        <template v-if="components.length > 0">
-          <component 
-              v-for="(component, index) in components" 
-              class="component-wrapper"
-              :key="index"
-              :is="component.type"
-              :style="{ position: 'absolute', left: component.x + 'px', top: component.y + 'px', ...componentStyles[index] }"
-              v-bind="component.props"
-              v-model="componentDefaultValues[index]"
-              @mousedown="startDrag(index, $event)"
-              @click="selectComponent(index)"
-              @update:props="updateProps">
-              <template v-if="component.type === 'el-button' || component.type === 'van-button' || component.type === 'el-text' || component.type === 'el-divider'">
-                {{ component.props.placeholder }}
-              </template>
-              <template v-else-if="component.type === 'el-select' || component.type === 'van-picker'">
-                <template v-if="component.props.options?.options?.length > 0">
-                    <el-option
-                      v-if="component.type === 'el-select'"
-                      v-for="(option, i) in component.props.options.options"
-                      :key="i"
-                      :label="option.label"
-                      :value="option.value"
-                      @click="updateProps(index, {options: {...component.props.options, default: option.value}})"
-                    />
-                  <template v-else>
-                    {{ component.props.options.options[component.props.options.default]?.label || component.props.options.options[0]?.label }}
-                  </template>
-                </template>
-              </template>
-              <template v-else-if="component.type === 'el-checkbox'">
-                {{ component.props.label }}
-              </template>
-              <template v-else-if="component.type === 'el-table'">
-                <el-table-column
-                  v-for="(column, i) in component.props.columns?.columns"
-                  :key="i"
-                  :prop="column.prop"
-                  :label="column.label"
-                />
-              </template> 
-          </component>
-        </template>
-        <div v-else class="tips">请拖动左侧组件到此</div>
-    </div>
+   
+        <div class="canvas" ref="canvas" 
+            @drop="handleDrop" 
+            @dragover="handleDragOver"
+            :style="canvasStyle">
+            <template v-if="components.length > 0">
+              <DraggableContainer>
+                <Vue3DraggableResizable 
+                  v-for="(component, index) in components" 
+                  :key="index"
+                  :x="component.x"
+                  :y="component.y"
+                  :initW="component.styles.width"
+                  :initH="component.styles.height"
+                  v-model:w="component.styles.width"
+                  v-model:h="component.styles.height"
+                  :style="{ ...componentStyles[index] }"
+                  @dragging="startDrag(index, $event)"
+                  @resizing="onResize(index, $event)"
+                  >
+                  <component 
+                      class="component-wrapper"
+                      :is="component.type"
+                      :style="{ ...componentStyles[index] }"
+                      v-bind="component.props"
+                      v-model="componentDefaultValues[index]"
+                      @click="selectComponent(index)"
+                      @update:props="updateProps">
+                      <template v-if="component.type === 'el-button' || component.type === 'van-button' || component.type === 'el-text' || component.type === 'el-divider'">
+                        {{ component.props.placeholder }}
+                      </template>
+                      <template v-else-if="component.type === 'el-select' || component.type === 'van-picker'">
+                        <template v-if="component.props.options?.options?.length > 0">
+                            <el-option
+                              v-if="component.type === 'el-select'"
+                              v-for="(option, i) in component.props.options.options"
+                              :key="i"
+                              :label="option.label"
+                              :value="option.value"
+                              @click="updateProps(index, {options: {...component.props.options, default: option.value}})"
+                            />
+                          <template v-else>
+                            {{ component.props.options.options[component.props.options.default]?.label || component.props.options.options[0]?.label }}
+                          </template>
+                        </template>
+                      </template>
+                      <template v-else-if="component.type === 'el-checkbox'">
+                        {{ component.props.label }}
+                      </template>
+                      <template v-else-if="component.type === 'el-table'">
+                        <el-table-column
+                          v-for="(column, i) in component.props.columns?.columns"
+                          :key="i"
+                          :prop="column.prop"
+                          :label="column.label"
+                        />
+                      </template> 
+                  </component>
+                </Vue3DraggableResizable>
+              </DraggableContainer>
+            </template>
+            <div v-else class="tips">请拖动左侧组件到此</div>
+        </div>
   </main>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, onUnmounted } from 'vue';
 import { useCanvasStore } from '../../stores/canvas';
+import Vue3DraggableResizable, { DraggableContainer } from 'vue3-draggable-resizable'
+import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
 
 export default defineComponent({
   name: 'Canvas',
+  components: {
+    Vue3DraggableResizable, DraggableContainer
+  },
   props: {
     components: {
       type: Array as () => Array<{
@@ -82,6 +101,7 @@ export default defineComponent({
   // emits: ['drop', 'dragover', 'update:props'],
   emits: ['dragover', 'update:props'],
   setup(props, { emit }) {
+
     const canvasStyle = computed({
       get: () => {
         if (props.currentView === 'mobile') {
@@ -141,42 +161,56 @@ export default defineComponent({
     };
     
     const startDrag = (index: number, e: MouseEvent) => {
-      e.stopPropagation()
-      const component = {...props.components[index]}
-      const startX = e.clientX
-      const startY = e.clientY
-      const startLeft = component.x
-      const startTop = component.y
+      // e.stopPropagation()
+      // const component = {...props.components[index]}
+      // const startX = e.x
+      // const startY = e.y
+      // const startLeft = startX
+      // const startTop = startY
+
+      props.components[index].x = e.x
+      props.components[index].y = e.y
       
-      const onMouseMove = (moveEvent: MouseEvent) => {
-        const dx = moveEvent.clientX - startX
-        const dy = moveEvent.clientY - startY
-        props.components[index].x = startLeft + dx
-        props.components[index].y = startTop + dy
-      }
+      // const onMouseMove = (moveEvent: MouseEvent) => {
+      //   const dx = moveEvent.clientX - startX
+      //   const dy = moveEvent.clientY - startY
+      //   props.components[index].x = startLeft + dx
+      //   props.components[index].y = startTop + dy
+      // }
       
-      const onMouseUp = () => {
-        document.removeEventListener('mousemove', onMouseMove)
-        document.removeEventListener('mouseup', onMouseUp)
+      // const onMouseUp = () => {
+      //   document.removeEventListener('mousemove', onMouseMove)
+      //   document.removeEventListener('mouseup', onMouseUp)
         
-        // 检查组件是否超出画布底部
-        const rect = canvas.value!.getBoundingClientRect();
-        const component = props.components[index];
-        const componentHeight = component.styles?.height ? parseInt(component.styles.height) : 0;
-        const componentBottom = component.y + componentHeight;
-        const currentHeight = parseInt(canvasStyle.value.height);
-        console.log('component', component)
-        if (componentBottom > currentHeight - 50) {
-          // 根据组件底部位置计算新高度，增加100px缓冲空间
-          canvasStyle.value = {
-            ...canvasStyle.value,
-            height: `${componentBottom + 100}px`
-          };
-        }
-      }
+      //   // 检查组件是否超出画布底部
+      //   const rect = canvas.value!.getBoundingClientRect();
+      //   const component = props.components[index];
+      //   const componentHeight = component.styles?.height ? parseInt(component.styles.height) : 0;
+      //   const componentBottom = component.y + componentHeight;
+      //   const currentHeight = parseInt(canvasStyle.value.height);
+      //   console.log('component', component)
+      //   if (componentBottom > currentHeight - 50) {
+      //     // 根据组件底部位置计算新高度，增加100px缓冲空间
+      //     canvasStyle.value = {
+      //       ...canvasStyle.value,
+      //       height: `${componentBottom + 100}px`
+      //     };
+      //   }
+      // }
       
-      document.addEventListener('mousemove', onMouseMove)
-      document.addEventListener('mouseup', onMouseUp)
+      // document.addEventListener('mousemove', onMouseMove)
+      // document.addEventListener('mouseup', onMouseUp)
+    }
+
+    const onResize = (index: number, resizing: any) => {
+      // 处理调整大小时的吸附逻辑
+      // console.log(`Size: ${x},${y},${width}x${height}`)
+      const { x, y, w, h } = resizing;
+      // 设置宽度和高度
+      const component = props.components[index];
+      component.styles.width = w
+      component.styles.height = h
+
     }
     
     const updateProps = (index: number, newProps: Record<string, any>) => {
@@ -238,7 +272,7 @@ export default defineComponent({
 
     const handleCanvasClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (!target?.closest('.component-wrapper')) {
+      if (!target?.closest('.component-wrapper') && !target.closest('.vdr-container')) {
         canvasStore.selectedComponent = null;
         canvasStore.selectedComponentIndex = -1;
       }
@@ -274,7 +308,8 @@ export default defineComponent({
       componentDefaultValues,
       componentStyles,
       handleCanvasClick,
-      option
+      option,
+      onResize
     };
   }
 });

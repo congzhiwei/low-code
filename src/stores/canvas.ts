@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-04-17 15:07:18
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-06 14:58:51
+ * @LastEditTime: 2025-07-01 14:59:02
  */
 import { defineStore } from 'pinia'
 import defaultWidths from './defaultWidths'
@@ -314,17 +314,17 @@ const defaultProps: Record<string, Record<string, any>> = {
 } as const
 
 const defaultStyles: Record<string, Record<string, any>> = {
-  'el-text': { width: '', height: '', widthUnit: 'px', heightUnit: 'px', color: '', fontSize: '', fontWeight: '', fontStyle: '', textDecoration: '', backgroundColor: ''},
-  'el-button': { width: '', height: '', widthUnit: 'px', heightUnit: 'px', color: ''},
-  'el-input': { width: defaultWidths['el-input'], height: '', widthUnit: 'px', heightUnit: 'px'},
-  'el-select': { width: defaultWidths['el-select'], height: '', widthUnit: 'px', heightUnit: 'px' },
-  'el-checkbox': { width: '', height: '', widthUnit: 'px', heightUnit: 'px' },
-  'el-radio': { width: '', height: '', widthUnit: 'px', heightUnit: 'px' },
-  'el-switch': { width: '', height: '', widthUnit: 'px', heightUnit: 'px'},
-  'el-slider': { width: defaultWidths['el-slider'], height: '', widthUnit: 'px', heightUnit: 'px' },
+  'el-text': { width: defaultWidths['el-text'], height: 28, widthUnit: 'px', heightUnit: 'px', color: '', fontSize: '', fontWeight: '', fontStyle: '', textDecoration: '', backgroundColor: ''},
+  'el-button': { width: defaultWidths['el-button'], height: 32, widthUnit: 'px', heightUnit: 'px', color: ''},
+  'el-input': { width: defaultWidths['el-input'], height: 32, widthUnit: 'px', heightUnit: 'px'},
+  'el-select': { width: defaultWidths['el-select'], height: 32, widthUnit: 'px', heightUnit: 'px' },
+  'el-checkbox': { width: defaultWidths['el-checkbox'], height: 24, widthUnit: 'px', heightUnit: 'px' },
+  'el-radio': { width: defaultWidths['el-radio'], height: 24, widthUnit: 'px', heightUnit: 'px' },
+  'el-switch': { width: defaultWidths['el-switch'], height: 30, widthUnit: 'px', heightUnit: 'px'},
+  'el-slider': { width: defaultWidths['el-slider'], height: 40, widthUnit: 'px', heightUnit: 'px' },
   'el-image': { width: defaultWidths['el-image'], height: 100, widthUnit: 'px', heightUnit: 'px' },
-  'el-divider': { width: defaultWidths['el-divider'], height: '', widthUnit: 'px', heightUnit: 'px', borderColor: '' },
-  'el-table': { width: defaultWidths['el-table'], height: '', widthUnit: 'px', heightUnit: 'px', '--el-table-border-color': ''},
+  'el-divider': { width: defaultWidths['el-divider'], height: 50, widthUnit: 'px', heightUnit: 'px', borderColor: '' },
+  'el-table': { width: defaultWidths['el-table'], height: 300, widthUnit: 'px', heightUnit: 'px', '--el-table-border-color': ''},
   'van-button': { width: 60, height: '', widthUnit: 'px', heightUnit: 'px' },
   'van-field': { width: defaultWidths['van-field'], height: '', widthUnit: 'px', heightUnit: 'px' },
   'van-picker': { width: defaultWidths['van-picker'], height: '', widthUnit: 'px', heightUnit: 'px' },
@@ -333,7 +333,7 @@ const defaultStyles: Record<string, Record<string, any>> = {
   'c-pie-chart': { width: defaultWidths['c-pie-chart'], height: 200, widthUnit: 'px', heightUnit: 'px' }, 
   'c-line-chart': { width: defaultWidths['c-line-chart'], height: 200, widthUnit: 'px', heightUnit: 'px' },
   'c-bar-chart': { width: defaultWidths['c-bar-chart'], height: 200, widthUnit: 'px', heightUnit: 'px' },
-  'QuestionRenderer': { width: '', height: '', widthUnit: 'px', heightUnit: 'px', color: '', backgroundColor: 'transparent'}
+  'QuestionRenderer': { width: defaultWidths['QuestionRenderer']('pc'), height: 300, widthUnit: 'px', heightUnit: 'px', color: '', backgroundColor: 'transparent'}
 } as const
 
 export const useCanvasStore = defineStore('canvas', {
