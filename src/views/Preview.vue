@@ -62,8 +62,9 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import service from '../api/request';
 import { Loading, ArrowLeft } from '@element-plus/icons-vue';
-import { Project } from '../stores/canvas';
+import { Project } from '../stores/types'
 
 export default defineComponent({
   name: 'Preview',
@@ -121,7 +122,7 @@ export default defineComponent({
       })
     })
     
-    const loadProject = (projectId: string) => {
+    const loadProject = async (projectId: string) => {
       const savedProjects = localStorage.getItem('projects');
       if (savedProjects) {
         try {
@@ -131,7 +132,16 @@ export default defineComponent({
             project.value = foundProject;
             viewType.value = foundProject.viewType || 'pc';
             canvasStyle.value = foundProject.canvasStyle || {};
+
+            // 处理关联api数据
+            project.value.components.forEach(async (comp) => {
+              if(comp.props.columns?.type === 'related' && !comp.props.columns?.useEditData){
+                comp.props.data = []
+                comp.props.data = await loadTableData(comp.props.columns.api)
+              }
+            })
           }
+          console.log('项目加载成功:', project.value);
         } catch (e) {
           console.error('加载项目失败:', e);
         } finally {
@@ -140,7 +150,20 @@ export default defineComponent({
       } else {
         loading.value = false;
       }
-    };
+    }
+
+    const loadTableData = (api: string) => {
+      if(api){
+        return service.post(api)
+          .then((res:any) => {
+            //todo
+            const data = res?.schoolList || [];
+            return Array.isArray(data)? data : [];
+          }).catch(error => {
+            console.error('API调用失败:', error);
+          });
+      }
+    }
     
     const handleSelectChange = (index: number, value: any) => {
       if (project.value && project.value.components[index].type === 'el-select') {

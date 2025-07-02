@@ -36,6 +36,7 @@
   import Canvas from '../components/Layout/Canvas.vue'
   import PropertyPanel from '../components/Layout/PropertyPanel.vue'
   import config from '../config'
+  import service from '../api/request';
   import { cloneDeep } from 'lodash'
   
   export default defineComponent({
@@ -61,6 +62,19 @@
         canvasStore.currentView = viewValue === 'pc' || viewValue === 'mobile' ? viewValue : 'pc';
         canvasStore.projectName = config.projectName
 
+        const loadTableData = (api: string) => {
+          if(api){
+            return service.post(api)
+              .then((res:any) => {
+                //todo
+                const data = res?.schoolList || [];
+                return Array.isArray(data)? data : [];
+              }).catch(error => {
+                console.error('API调用失败:', error);
+              });
+          }
+        }
+
         // 如果有projectId则加载已有数据
         const projectId = route.query.projectId as string
         if (projectId) {
@@ -70,104 +84,108 @@
               const project = projects.find((p: any) => p.id === projectId)
               if (project) {
                   canvasStore.components = project.components
-                  canvasStore.selectedComponent = project.selectedComponent
+                  canvasStore.selectedComponent = null
                   canvasStore.currentView = project.viewType
                   canvasStore.projectName = project.name
                   // 添加这行代码来设置画布高度
                   canvasStore.canvasStyle = project.canvasStyle || { height: '100%' }
+
+                  // 处理关联api数据
+                  canvasStore.components.forEach(async (comp:any) => {
+                    if(comp.props.columns?.type === 'related' && !comp.props.columns?.useEditData){
+                      comp.props.data = []
+                      comp.props.data = await loadTableData(comp.props.columns.api)
+                      console.log('comp.props.data', comp.props.data)
+                    }
+                  })
               }
-              // project.components[8].styles['--el-table-border-color'] = '#000000'
-              // project.components[8].props['header-cell-style'] = {backgroundColor: '#000000', color: '#ffffff'}
-              // project.components[8].props['row-style'] = {backgroundColor: '#ffffff', color: '#000000'}
-              // project.components[8].props['cell-style'] = {backgroundColor: '#ffffff', color: '#000000'}
-              // project.components[10].styles['backgroundColor'] = '#ffffff'
             }
         }
       
-      const saveCanvas = () => {
-        const projectId = route.query.projectId as string;
+        const saveCanvas = () => {
+          const projectId = route.query.projectId as string;
 
-        console.log('canvasStore', canvasStore)
+          console.log('canvasStore', canvasStore)
 
-        const canvasData = {
-          id: projectId || Date.now().toString(),
-          name: canvasStore.projectName || '我的项目',
-          updatedAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-          viewType: canvasStore.currentView,
-          components: cloneDeep(canvasStore.components),
-          selectedComponent: cloneDeep(canvasStore.selectedComponent),
-          canvasStyle: cloneDeep(canvasStore.canvasStyle)
-        };
-        console.log('保存的画布数据:', canvasData);
-        
-        // 保存到本地存储
-        const savedProjects = localStorage.getItem('projects');
-        let projects = [];
-        if (savedProjects) {
-          projects = JSON.parse(savedProjects);
-        }
-        
-        if (projectId) {
-          const index = projects.findIndex((p: any) => p.id === projectId);
-          if (index !== -1) {
-            projects[index] = canvasData;
+          const canvasData = {
+            id: projectId || Date.now().toString(),
+            name: canvasStore.projectName || '我的项目',
+            updatedAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+            viewType: canvasStore.currentView,
+            components: cloneDeep(canvasStore.components),
+            selectedComponent: cloneDeep(canvasStore.selectedComponent),
+            canvasStyle: cloneDeep(canvasStore.canvasStyle)
+          };
+          console.log('保存的画布数据:', canvasData);
+          
+          // 保存到本地存储
+          const savedProjects = localStorage.getItem('projects');
+          let projects = [];
+          if (savedProjects) {
+            projects = JSON.parse(savedProjects);
+          }
+          
+          if (projectId) {
+            const index = projects.findIndex((p: any) => p.id === projectId);
+            if (index !== -1) {
+              projects[index] = canvasData;
+            } else {
+              projects.push(canvasData);
+            }
           } else {
             projects.push(canvasData);
           }
-        } else {
-          projects.push(canvasData);
+          localStorage.setItem('projects', JSON.stringify(projects));
+          
+          // 显示保存成功提示
+          proxy.$message.success(`项目"${canvasStore.projectName}"保存成功！`);
+          
+          // 更新路由参数中的projectId
+          if (!projectId) {
+            router.replace({ 
+              query: { 
+                ...route.query,
+                projectId: canvasData.id 
+              } 
+            });
+          }
+          
+          // 添加发送到服务器的逻辑
+          // axios('/api/save', {
+          //   method: 'POST',
+          //   headers: {
+          //     'Content-Type': 'application/json'
+          //   },
+          //   body: JSON.stringify(canvasData)
+          // });
         }
-        localStorage.setItem('projects', JSON.stringify(projects));
         
-        // 显示保存成功提示
-        proxy.$message.success(`项目"${canvasStore.projectName}"保存成功！`);
-        
-        // 更新路由参数中的projectId
-        if (!projectId) {
-          router.replace({ 
-            query: { 
-              ...route.query,
-              projectId: canvasData.id 
-            } 
-          });
+        const previewCanvas = () => {
+          // 预览画布逻辑
         }
         
-        // 添加发送到服务器的逻辑
-        // axios('/api/save', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json'
-        //   },
-        //   body: JSON.stringify(canvasData)
-        // });
-      }
-      
-      const previewCanvas = () => {
-        // 预览画布逻辑
-      }
-      
-      const startDrag = (componentType: string) => {
-        canvasStore.setDraggingComponent(componentType)
-      }
-      
-      // const handleDrop = (e: DragEvent) => {
-      //   canvasStore.handleDrop(e, canvas.value!)
-      // }
-      
-      const handleDragOver = (e: DragEvent) => {
-        canvasStore.handleDragOver(e)
-      }
-      
-      return {
-        currentView: computed(() => canvasStore.currentView),
-        saveCanvas,
-        previewCanvas,
-        startDrag,
-        // handleDrop,
-        handleDragOver,
-        canvas,
-        canvasStore,
-      }
+        const startDrag = (componentType: string) => {
+          canvasStore.setDraggingComponent(componentType)
+        }
+        
+        // const handleDrop = (e: DragEvent) => {
+        //   canvasStore.handleDrop(e, canvas.value!)
+        // }
+        
+        const handleDragOver = (e: DragEvent) => {
+          canvasStore.handleDragOver(e)
+        }
+        
+        return {
+          currentView: computed(() => canvasStore.currentView),
+          saveCanvas,
+          previewCanvas,
+          startDrag,
+          // handleDrop,
+          handleDragOver,
+          canvas,
+          canvasStore,
+        }
     }
   })
   </script>

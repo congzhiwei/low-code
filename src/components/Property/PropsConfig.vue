@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-06 17:40:47
  * @LastEditors: zwcong
- * @LastEditTime: 2025-07-01 16:41:13
+ * @LastEditTime: 2025-07-02 16:52:59
 -->
 <template>
   <div>
@@ -122,7 +122,7 @@
             @update:prop-value="(val: any) => { propsConfig[key] = val; $emit('update'); }"
             @update:data="(val: any) => { 
               console.log('update data', val);
-              propsConfig.data = val; 
+              propsConfig.data = cloneDeep(val); 
               $emit('update'); 
             }"
             @update:visible="(val: boolean) => { propsConfig[key].visible = val; $emit('update'); }"
@@ -131,7 +131,17 @@
         </template>
         <template v-else-if="getConfigType(key) === 'row'">
           <div>
+            <div class="flex mb-5" v-if="propsConfig.columns.type==='related'">
+              <el-checkbox 
+              v-model="propsConfig.columns.useEditData" 
+              size="small" 
+              @change="(val: any) => {
+                onUseEditDataChange(val, key);
+              }" />
+              <span class="sub-panel-title mb-0">使用自定义数据</span>
+            </div>
             <RowConfig
+              v-if="propsConfig.columns.useEditData"
               :prop-value="propsConfig[key]"
               :columns="propsConfig.columns.columns"
               :rowTitles="propsConfig.rowTitles"
@@ -236,6 +246,11 @@ export default defineComponent({
       emit('update');
     };
 
+    const onUseEditDataChange = (val:any, key:string) => {
+      props.propsConfig.data = cloneDeep(val ? props.propsConfig[key] : props.propsConfig.columns.apiData)
+      emit('update');
+    }
+
     return { 
       canvasStore, 
       getConfigType, 
@@ -245,7 +260,8 @@ export default defineComponent({
       handleImageUpload,
       showTableDataDialog,
       showTableColumnsDialog,
-      cloneDeep
+      cloneDeep,
+      onUseEditDataChange
     };
   },
   methods: {
@@ -276,8 +292,19 @@ export default defineComponent({
   font-size: 12px;
   color: #606266;
 }
+.mb-0{
+  margin-bottom: 0;
+}
+.mb-5{
+  margin-bottom: 5px;
+}
 .el-radio-group {
   display: flex;
+}
+.flex{
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
 
 .upload-box {

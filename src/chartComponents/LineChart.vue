@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-29 15:23:11
  * @LastEditors: zwcong
- * @LastEditTime: 2025-06-06 16:21:23
+ * @LastEditTime: 2025-07-02 17:05:40
 -->
 <template>
     <div :style="componentStyle">
@@ -111,6 +111,11 @@ const option = computed(() => {
         title: {
             text: props.title,
             left: props.titleAlign
+        },
+        grid: {
+            left: '5%',
+            bottom: '5%',
+            containLabel: true
         },
         tooltip: {
             trigger: props.tooltipTrigger,

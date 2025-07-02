@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-04-17 15:07:18
  * @LastEditors: zwcong
- * @LastEditTime: 2025-07-01 17:31:53
+ * @LastEditTime: 2025-07-02 15:01:28
  */
 import { defineStore } from 'pinia'
 import defaultWidths from './defaultWidths'
@@ -301,7 +301,7 @@ const defaultProps: Record<string, Record<string, any>> = {
   'el-slider': { size: 'default', min: 0, max: 100 },
   'el-image': { src: '', alt: '', fit: 'fill', previewSrcList: [], lazy: false },
   'el-divider': { direction: 'horizontal', contentPosition: 'center', borderStyle: 'solid', placeholder: '' },
-  'el-table': { columns: { type: 'custom', columns: [], default: undefined }, data:[], stripe: false, border: false, size: 'default', 'header-cell-style': {'backgroundColor': '#FFF', 'color': '#000000'}, 'cell-style': {'backgroundColor': '#FFF', 'color': '#000000'}, rowTitles: null},
+  'el-table': { columns: { type: 'custom', columns: [], default: undefined }, data:[], stripe: false, border: false, size: 'default', 'header-cell-style': {'backgroundColor': null, 'color': '#000000'}, 'cell-style': {'backgroundColor': null, 'color': '#000000'}, rowTitles: null},
   'van-button': { placeholder: '按钮', type: 'primary', size: 'default', plain: false, text: false, link: false, round: false, disabled: false },
   'van-field': { placeholder: '请输入内容', clearable: true },
   'van-picker': { columns: { type: 'custom', options: [], default: undefined } },
