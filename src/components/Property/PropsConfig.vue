@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-06 17:40:47
  * @LastEditors: zwcong
- * @LastEditTime: 2025-07-02 16:52:59
+ * @LastEditTime: 2025-07-03 15:00:44
 -->
 <template>
   <div>
@@ -141,7 +141,7 @@
               <span class="sub-panel-title mb-0">使用自定义数据</span>
             </div>
             <RowConfig
-              v-if="propsConfig.columns.useEditData"
+              v-if="(propsConfig.columns.useEditData && propsConfig.columns.type==='related') || propsConfig.columns.type==='custom'"
               :prop-value="propsConfig[key]"
               :columns="propsConfig.columns.columns"
               :rowTitles="propsConfig.rowTitles"
