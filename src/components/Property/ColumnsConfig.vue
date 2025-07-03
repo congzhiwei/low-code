@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-16 15:06:15
  * @LastEditors: zwcong
- * @LastEditTime: 2025-07-01 17:33:24
+ * @LastEditTime: 2025-07-03 16:00:15
 -->
 <template>
   <div>
@@ -67,6 +67,9 @@ export default defineComponent({
     apiList: {
       type: Array as () => Array<{name: string, url: string}>,
       default: () => []
+    },
+    maxRow: {
+      type: [Number, undefined] as any,
     }
   },
   emits: ['update:propValue', 'show-api-dialog', 'update:data'],
@@ -96,7 +99,12 @@ export default defineComponent({
           .then((res:any) => {
             // this.propValue.apiData = res?.data || [];
             const data = res?.schoolList || [];
-            this.propValue.apiData = Array.isArray(data) ? data : [];
+            //根据maxRow返回最多行数
+            if (this.maxRow && data?.length > this.maxRow) {
+              this.propValue.apiData = data?.slice(0, this.maxRow);
+            }else{
+              this.propValue.apiData = Array.isArray(data) ? data : [];
+            }
             if (!this.propValue.columns) {
               this.propValue.columns = [];
             }

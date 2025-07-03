@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-29 15:23:11
  * @LastEditors: zwcong
- * @LastEditTime: 2025-07-02 17:06:39
+ * @LastEditTime: 2025-07-03 15:24:59
 -->
 <template>
     <div :style="componentStyle">
@@ -139,7 +139,7 @@ const option = computed(() => {
                 show: props.seriesLabelShow,
             },
             roseType: props.isShowRoseType ? 'radius' : '',
-            data: Object.values(props.data[0]).map((item, index) => ({
+            data: props?.data[0] && Object.values(props.data[0]).map((item, index) => ({
                 value: item,
                 name: props.columns.columns[index].label
             })),

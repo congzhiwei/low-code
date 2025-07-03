@@ -33,7 +33,7 @@
         </el-table-column>
       </el-table>
       <el-button 
-        v-if="showAddRow"
+        v-if="showAddRow && maxRow === undefined || maxRow > propValue.length"
         type="primary" 
         size="small" 
         @click="addRow"
@@ -67,9 +67,15 @@ export default defineComponent({
     showAddRow: {
       type: Boolean,
       default: true
+    },
+    maxRow: {
+      type: [Number, undefined] as any,
     }
   },
   emits: ['update:propValue'],
+  computed: {
+    
+  },
   methods: {
     updateProps() {
       this.$emit('update:propValue', this.propValue);

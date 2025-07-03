@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-06 17:40:47
  * @LastEditors: zwcong
- * @LastEditTime: 2025-07-03 15:00:44
+ * @LastEditTime: 2025-07-03 15:52:47
 -->
 <template>
   <div>
@@ -107,7 +107,7 @@
           </div>
         </template>
         <template v-else-if="getConfigType(key) === 'columns'">
-          <el-select v-model="propsConfig[key].type" @change="handleSelectChange(key, false)" size="small">
+          <el-select v-model="propsConfig[key].type" @change="handleColumnsSelectChange" size="small">
             <el-option 
               v-for="option in canvasStore.componentConfigs[componentType]?.[configType][key]?.options"
               :key="option.value"
@@ -117,6 +117,7 @@
           </el-select>
           <ColumnsConfig 
             :prop-value="propsConfig[key]" 
+            :maxRow="propsConfig.maxRow"
             :data="propsConfig.data"
             :api-list="apiList"
             @update:prop-value="(val: any) => { propsConfig[key] = val; $emit('update'); }"
@@ -146,6 +147,7 @@
               :columns="propsConfig.columns.columns"
               :rowTitles="propsConfig.rowTitles"
               :showAddRow="propsConfig.showAddRow"
+              :maxRow="propsConfig.maxRow"
               @update:prop-value="(val: any) => { propsConfig[key] = val; $emit('update'); }"
             />
           </div>
@@ -277,6 +279,14 @@ export default defineComponent({
       // console.log('this.propsConfig[key]', this.propsConfig, this.propsConfig[key])
       // this.$emit('update');
     },
+
+    handleColumnsSelectChange(){
+      //切换时清空列数据和行数据
+      this.propsConfig.columns.columns = []
+      this.propsConfig.rowTitles = this.propsConfig.rowTitles?[]:null
+      this.propsConfig.data = []
+      this.$emit('update');
+    }
 
   }
 });
