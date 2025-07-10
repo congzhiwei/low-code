@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-16 15:06:15
  * @LastEditors: zwcong
- * @LastEditTime: 2025-07-03 16:00:15
+ * @LastEditTime: 2025-07-10 16:18:15
 -->
 <template>
   <div>
@@ -13,7 +13,7 @@
         <el-input v-model="column.prop" placeholder="字段名" size="small" @input="updateProps" />
         <el-button type="danger" size="small" @click="removeColumn(index)">删除</el-button>
         </div>
-        <el-button class="add-column-btn" type="primary" size="small" @click="addColumn">添加列</el-button>
+        <el-button class="mt-8" type="primary" size="small" @click="addColumn">添加列</el-button>
     </div>
     <div v-else-if="propValue.type === 'related'">
       <ApiSelector 
@@ -22,6 +22,19 @@
         @show-api-dialog="showApiDialog"
         @api-change="handleApiChange"
       />
+      <div class="mt-8" v-if="propValue.selectedApiList">
+        <el-select 
+            v-model="propValue.apiKey" 
+            placeholder="选择使用对象字段" 
+            size="small"
+            @change="handleApiKey">
+            <el-option
+              v-for="field in propValue.selectedApiList"
+              :key="field"
+              :label="field"
+              :value="field" />
+          </el-select>
+      </div>
       <div v-if="propValue.apiData">
         <div v-for="(column, index) in propValue.columns" :key="index" class="column-row">
           <el-input v-model="column.label" placeholder="列名" size="small" @input="updateProps" />
@@ -38,7 +51,7 @@
           </el-select>
           <el-button type="danger" size="small" @click="removeColumn(index)">删除</el-button>
         </div>
-        <el-button class="add-column-btn" type="primary" size="small" @click="addColumn">添加列</el-button>
+        <el-button class="mt-8" type="primary" size="small" @click="addColumn">添加列</el-button>
       </div>
     </div>
    </div>
@@ -97,29 +110,49 @@ export default defineComponent({
       if (this.propValue.api) {
         service.post(this.propValue.api)
           .then((res:any) => {
-            // this.propValue.apiData = res?.data || [];
-            const data = res?.schoolList || [];
+            this.propValue.apiDataInitial = res
+            // this.propValue.apiData = res?.data || {};
+            // 如果data是数组，则将其赋给apiData
+            if (Array.isArray(res)) {
+              this.propValue.apiData = res || [];
+              this.computedMaxRow()
+              this.updateProps();
+            }else if (res) {
+              this.propValue.selectedApiList = Object.keys(res);
+            }
+
+            // const data = res?.schoolList || [];
             //根据maxRow返回最多行数
-            if (this.maxRow && data?.length > this.maxRow) {
-              this.propValue.apiData = data?.slice(0, this.maxRow);
-            }else{
-              this.propValue.apiData = Array.isArray(data) ? data : [];
-            }
-            if (!this.propValue.columns) {
-              this.propValue.columns = [];
-            }
-            this.updateProps();
+            // if (this.maxRow && data?.length > this.maxRow) {
+            //   this.propValue.apiData = data?.slice(0, this.maxRow);
+            // }else{
+            //   this.propValue.apiData = Array.isArray(data) ? data : [];
+            // }
+            // if (!this.propValue.columns) {
+            //   this.propValue.columns = [];
+            // }
+            // this.updateProps();
           }).catch(error => {
             console.error('API调用失败:', error);
           });
       }
     },
+
+    // 根据maxRow返回最多行数
+    computedMaxRow() {
+      if(this.maxRow && this.propValue.apiData?.length > this.maxRow) {
+        this.propValue.apiData = this.propValue.apiData?.slice(0, this.maxRow);
+      }else{
+        this.propValue.apiData = Array.isArray(this.propValue.apiData) ? this.propValue.apiData : [];
+      }
+    },
+
     showApiDialog() {
       console.log('showApiDialog..')
       this.$emit('show-api-dialog');
     },
     getApiFields() {
-      if (!this.propValue.apiData || this.propValue.apiData.length === 0) {
+      if (!this.propValue.apiData || !Array.isArray(this.propValue.apiData) || this.propValue.apiData.length === 0) {
         return [];
       }
       return Object.keys(this.propValue.apiData[0]);
@@ -148,18 +181,29 @@ export default defineComponent({
         return row;
       }));
     },
+
+    handleApiKey() {
+      // 重置列配置
+      this.propValue.columns = [];
+      // 重置表格数据
+      this.$emit('update:data', []);
+
+      this.propValue.apiData = this.propValue.apiDataInitial[this.propValue.apiKey]
+      this.computedMaxRow()
+      this.updateProps();
+    },
   }
 });
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .column-row {
   display: flex;
   align-items: center;
   margin-top: 8px;
   gap: 8px;
 }
-.add-column-btn {
+.mt-8 {
   margin-top: 8px;
 }
 .api-input-row {

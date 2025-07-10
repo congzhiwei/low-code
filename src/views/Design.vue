@@ -62,12 +62,12 @@
         canvasStore.currentView = viewValue === 'pc' || viewValue === 'mobile' ? viewValue : 'pc';
         canvasStore.projectName = config.projectName
 
-        const loadTableData = (api: string) => {
+        const loadTableData = (api: string, key: string) => {
           if(api){
             return service.post(api)
               .then((res:any) => {
                 //todo
-                const data = res?.schoolList || [];
+                const data = res[key] || [];
                 return Array.isArray(data)? data : [];
               }).catch(error => {
                 console.error('API调用失败:', error);
@@ -94,7 +94,7 @@
                   canvasStore.components.forEach(async (comp:any) => {
                     if(comp.props.columns?.type === 'related' && !comp.props.columns?.useEditData){
                       comp.props.data = []
-                      comp.props.data = await loadTableData(comp.props.columns.api)
+                      comp.props.data = await loadTableData(comp.props.columns.api, comp.props.columns.apiKey)
                       console.log('comp.props.data', comp.props.data)
                     }
                   })

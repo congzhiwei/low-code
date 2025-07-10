@@ -10,7 +10,7 @@
           </el-radio>
         </div>
       </el-radio-group>
-      <el-button class="add-option-btn" type="primary" size="small" @click="addOption">添加选项</el-button>
+      <el-button class="mt-8" type="primary" size="small" @click="addOption">添加选项</el-button>
     </div>
     <div v-else-if="propValue.type === 'related'">
       <ApiSelector 
@@ -19,6 +19,19 @@
         @show-api-dialog="showApiDialog"
         @api-change="handleApiChange"
       />
+      <div class="mt-8" v-if="propValue.selectedApiList">
+        <el-select 
+            v-model="propValue.apiKey" 
+            placeholder="选择使用对象字段" 
+            size="small"
+            @change="handleApiKey">
+            <el-option
+              v-for="field in propValue.selectedApiList"
+              :key="field"
+              :label="field"
+              :value="field" />
+          </el-select>
+      </div>
       <div class="api-input-row" v-if="propValue.apiData">
         <el-select v-model="propValue.labelField" placeholder="选择显示名字段" size="small" @change="updateOptionsFromApi">
           <el-option v-for="field in Object.keys(propValue.apiData[0] || {})" :key="field" :label="field" :value="field" />
@@ -79,10 +92,21 @@ export default defineComponent({
       if (this.propValue.api) {
         service.post(this.propValue.api)
           .then((res:any) => {
+            this.propValue.apiDataInitial = res
+
+            // 如果data是数组，则将其赋给apiData
+            if (Array.isArray(res)) {
+              this.propValue.apiData = res || [];
+              this.updateProps();
+            }else if (res) {
+              this.propValue.selectedApiList = Object.keys(res);
+            }
+
+
             // todo
-            const data = res?.schoolList || [];
-            this.propValue.apiData = Array.isArray(data) ? data : [];
-            this.updateProps();
+            // const data = res?.schoolList || [];
+            // this.propValue.apiData = Array.isArray(data) ? data : [];
+            // this.updateProps();
           }).catch(error => {
             console.error('API调用失败:', error);
           });
@@ -104,7 +128,18 @@ export default defineComponent({
     showApiDialog() {
       // 这里可以emit事件让父组件处理
       this.$emit('show-api-dialog');
-    }
+    },
+    handleApiKey() {
+      this.propValue.labelField = '';
+      this.propValue.valueField = '';
+
+      this.propValue.options = [];
+
+      const data = this.propValue.apiDataInitial[this.propValue.apiKey]
+      this.propValue.apiData = Array.isArray(data) ? data : []
+      
+      this.updateProps();
+    },
   }
 });
 </script>
@@ -119,7 +154,7 @@ export default defineComponent({
   margin-right: 8px;
   width: 120px;
 }
-.add-option-btn {
+.mt-8 {
   margin-top: 8px;
 }
 .api-input-row {

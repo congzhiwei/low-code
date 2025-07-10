@@ -137,7 +137,7 @@ export default defineComponent({
             project.value.components.forEach(async (comp) => {
               if(comp.props.columns?.type === 'related' && !comp.props.columns?.useEditData){
                 comp.props.data = []
-                comp.props.data = await loadTableData(comp.props.columns.api)
+                comp.props.data = await loadTableData(comp.props.columns.api, comp.props.columns.apiKey)
               }
             })
           }
@@ -152,12 +152,13 @@ export default defineComponent({
       }
     }
 
-    const loadTableData = (api: string) => {
+    const loadTableData = (api: string, key: string) => {
+      console.log('key==', key)
       if(api){
         return service.post(api)
           .then((res:any) => {
             //todo
-            const data = res?.schoolList || [];
+            const data = res[key] || [];
             return Array.isArray(data)? data : [];
           }).catch(error => {
             console.error('API调用失败:', error);
