@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-16 15:06:15
  * @LastEditors: zwcong
- * @LastEditTime: 2025-07-10 16:18:15
+ * @LastEditTime: 2025-07-11 14:06:47
 -->
 <template>
   <div>
@@ -78,7 +78,7 @@ export default defineComponent({
       default: () => []
     },
     apiList: {
-      type: Array as () => Array<{name: string, url: string}>,
+      type: Array as () => Array<{name: string, url: string, id: number}>,
       default: () => []
     },
     maxRow: {
@@ -107,8 +107,8 @@ export default defineComponent({
       this.fetchApiData();
     },
     fetchApiData() {
-      if (this.propValue.api) {
-        service.post(this.propValue.api)
+      if (this.propValue.api?.url) {
+        service.post(this.propValue.api?.url, this.propValue.api?.paramsObj)
           .then((res:any) => {
             this.propValue.apiDataInitial = res
             // this.propValue.apiData = res?.data || {};

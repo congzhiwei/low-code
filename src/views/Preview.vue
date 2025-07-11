@@ -152,10 +152,10 @@ export default defineComponent({
       }
     }
 
-    const loadTableData = (api: string, key: string) => {
+    const loadTableData = (api: any, key: string) => {
       console.log('key==', key)
       if(api){
-        return service.post(api)
+        return service.post(api?.url, api?.paramsObj)
           .then((res:any) => {
             //todo
             const data = res[key] || [];

@@ -60,7 +60,7 @@ export default defineComponent({
       required: true
     },
     apiList: {
-      type: Array as () => Array<{name: string, url: string}>,
+      type: Array as () => Array<{name: string, url: string, id: number}>,
       default: () => []
     }
   },
@@ -89,8 +89,8 @@ export default defineComponent({
       this.updateProps();
     },
     fetchApiData() {
-      if (this.propValue.api) {
-        service.post(this.propValue.api)
+      if (this.propValue.api?.url) {
+        service.post(this.propValue.api?.url, this.propValue.api?.paramsObj)
           .then((res:any) => {
             this.propValue.apiDataInitial = res
 

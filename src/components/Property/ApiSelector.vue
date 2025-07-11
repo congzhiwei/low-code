@@ -1,8 +1,16 @@
+<!--
+ * @Description: 
+ * @Author: zwcong
+ * @Date: 2025-05-21 17:14:57
+ * @LastEditors: zwcong
+ * @LastEditTime: 2025-07-11 13:54:27
+-->
 <template>
   <div class="api-input-row">
     <el-button type="primary" size="small" @click="showApiDialog">添加API</el-button>
     <el-select 
-      v-model="selectedApi" 
+      v-model="selectedApi"
+      value-key="id"
       placeholder="请选择API" 
       size="small" 
       @change="handleApiChange">
@@ -10,7 +18,7 @@
         v-for="api in apiList" 
         :key="api.name" 
         :label="api.name" 
-        :value="api.url" />
+        :value="api" />
     </el-select>
   </div>
 </template>
@@ -22,7 +30,7 @@ export default defineComponent({
   name: 'ApiSelector',
   props: {
     apiList: {
-      type: Array as () => Array<{name: string, url: string}>,
+      type: Array as () => Array<{name: string, url: string, id: number}>,
       default: () => []
     },
     modelValue: {
@@ -32,26 +40,26 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'show-api-dialog', 'api-change'],
   setup(props, { emit }) {
-    const selectedApi = ref(props.modelValue);
+    const selectedApi = ref(props.modelValue)
 
     watch(() => props.modelValue, (newVal) => {
       selectedApi.value = newVal;
-    });
+    })
 
     const showApiDialog = () => {
       emit('show-api-dialog');
-    };
+    }
 
     const handleApiChange = (value: string) => {
       emit('update:modelValue', value);
       emit('api-change', value);
-    };
+    }
 
     return {
       selectedApi,
       showApiDialog,
       handleApiChange
-    };
+    }
   }
 });
 </script>

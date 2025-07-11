@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-06 17:40:47
  * @LastEditors: zwcong
- * @LastEditTime: 2025-07-10 15:57:39
+ * @LastEditTime: 2025-07-11 13:55:05
 -->
 <template>
   <div>
@@ -197,7 +197,7 @@ export default defineComponent({
       default: 'props'
     },
     apiList: {
-      type: Array as () => {name: string; url: string}[],
+      type: Array as () => {name: string; url: string, id: number}[],
       default: () => []
     }
   },

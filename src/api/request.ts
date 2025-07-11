@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-04-30 17:45:09
  * @LastEditors: zwcong
- * @LastEditTime: 2025-05-07 16:32:44
+ * @LastEditTime: 2025-07-10 17:59:55
  */
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
@@ -33,7 +33,6 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data;
-    console.log('res==', res)
     if (res.code !== 0) {
       ElMessage.error(res.msg || '请求失败');
       return Promise.reject(new Error(res.msg || 'Error'));

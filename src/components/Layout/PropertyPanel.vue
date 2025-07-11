@@ -75,13 +75,17 @@
         <el-form-item label="API地址：" >
           <el-input v-model="newApi.url" placeholder="请输入API地址" />
         </el-form-item>
+        <el-form-item label="API参数：" >
+          <el-input v-model="newApi.params" placeholder="请使用&符分隔参数，如name=zhangsan&age=12" />
+        </el-form-item>
         <div class="api-form-btns">
           <el-button type="primary" @click="saveApi">添加</el-button>
         </div>
       </el-form>
       <el-table :data="apiList">
         <el-table-column prop="name" label="名称" width="120px" />
-        <el-table-column prop="url" label="地址" />
+        <el-table-column prop="url" label="地址" show-overflow-tooltip />
+        <el-table-column prop="params" label="参数" width="200px" show-overflow-tooltip />
         <el-table-column label="操作" width="80px">
           <template #default="scope">
             <el-button size="small" type="danger" @click="deleteApi(scope.$index)">删除</el-button>
@@ -93,7 +97,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from 'vue';
+import { defineComponent, watch, ref } from 'vue';
 import { useCanvasStore } from '../../stores/canvas';
 import PropsConfig from '../Property/PropsConfig.vue';
 import EventConfig from '../Property/EventConfig.vue';
@@ -124,7 +128,7 @@ export default defineComponent({
     const getPropName = (componentType: string, propKey: string) => {
       return canvasStore.componentConfigs[componentType]?.props[propKey]?.name;
     };
-    const apiList = JSON.parse(localStorage.getItem('apiList') || '[]');
+    const apiList = ref(JSON.parse(localStorage.getItem('apiList') || '[]'));
 
     const deleteComponent = () => {
       if (canvasStore.selectedComponentIndex !== -1) {
@@ -222,15 +226,31 @@ export default defineComponent({
           type: 'warning'
         });
       }
+
+      //id 生成
+      this.newApi.id = Date.now().toString();
+
+      // 处理参数 格式{a:123,b:456}
+      const params:any = {};
+      if (this.newApi.params) {
+        this.newApi.params.split('&').forEach((param:any) => {
+          const [key, value] = param.split('=');
+          params[key] = value;
+        });
+      }
       
-      this.apiList.push({...this.newApi});
+      this.apiList.push({
+        ...this.newApi,
+       paramsObj: params,
+      })
+      console.log('this.apiList', this.apiList)
       localStorage.setItem('apiList', JSON.stringify(this.apiList));
       this.$message({
         message: 'API已保存',
         type: 'success'
       })
       this.apiDialogVisible = false;
-      this.newApi = {name: '', url: ''};
+      this.newApi = {name: '', url: '', params: '', id: ''};
     },
     deleteApi(index: number) {
       this.apiList.splice(index, 1);
@@ -242,8 +262,10 @@ export default defineComponent({
       activeTab: 'props',
       apiDialogVisible: false,
       newApi: {
+        id: '',
         name: '',
-        url: ''
+        url: '',
+        params: ''
       },
       apiList: [] as Array<{name: string, url: string}>,
       selectedEvent: '',
