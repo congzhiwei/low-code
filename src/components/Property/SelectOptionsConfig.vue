@@ -1,18 +1,6 @@
 <template>
   <div>
-    <div v-if="propValue.type === 'custom'">
-      <el-radio-group v-model="propValue.default">
-        <div v-for="(option, index) in propValue.options" :key="index" class="option-row">
-          <el-radio :value="option.value" :label="index" size="small">
-            <el-input v-model="option.label" placeholder="显示名" size="small" @input="updateProps" />
-            <el-input v-model="option.value" placeholder="选项值" size="small" @input="updateProps" />
-            <el-button type="danger" size="small" @click="removeOption(index)">删除</el-button>
-          </el-radio>
-        </div>
-      </el-radio-group>
-      <el-button class="mt-8" type="primary" size="small" @click="addOption">添加选项</el-button>
-    </div>
-    <div v-else-if="propValue.type === 'related'">
+    <div v-if="propValue.type === 'related'">
       <ApiSelector 
         v-model="propValue.api" 
         :api-list="apiList"
@@ -40,6 +28,27 @@
           <el-option v-for="field in Object.keys(propValue.apiData[0] || {})" :key="field" :label="field" :value="field" />
         </el-select>
       </div>
+      <div class="flex mt-8">
+        <el-checkbox 
+          v-model="propValue.useEditData" 
+          size="small" 
+          @change="(val: any) => {
+            onUseEditDataChange(val)
+          }" />
+        <span class="sub-panel-title mb-0">使用自定义数据</span>
+      </div>
+    </div>
+    <div v-if="propValue.type === 'custom' || (propValue.labelField && propValue.valueField && propValue.useEditData)">
+      <el-radio-group v-model="propValue.default">
+        <div v-for="(option, index) in propValue.options" :key="index" class="option-row">
+          <el-radio :value="option.value" :label="index" size="small">
+            <el-input v-model="option.label" placeholder="显示名" size="small" @input="updateProps" />
+            <el-input v-model="option.value" placeholder="选项值" size="small" @input="updateProps" />
+            <el-button type="danger" size="small" @click="removeOption(index)">删除</el-button>
+          </el-radio>
+        </div>
+      </el-radio-group>
+      <el-button class="mt-8" type="primary" size="small" @click="addOption">添加选项</el-button>
     </div>
   </div>
 </template>
@@ -48,6 +57,7 @@
 import { defineComponent } from 'vue';
 import service from '../../api/request';
 import ApiSelector from './ApiSelector.vue';
+import { cloneDeep } from 'lodash'
 
 export default defineComponent({
   name: 'SelectOptionsConfig',
@@ -113,6 +123,9 @@ export default defineComponent({
       }
     },
     handleApiChange() {
+      this.propValue.apiKey = ''
+      this.propValue.selectedApiList = []
+
       this.updateProps();
       this.fetchApiData();
     },
@@ -140,6 +153,16 @@ export default defineComponent({
       
       this.updateProps();
     },
+    onUseEditDataChange(val:any){
+      // props.propsConfig.data = cloneDeep(val ? props.propsConfig[key] : props.propsConfig.columns.apiData)
+      // emit('update');
+      console.log('this.propValue.options.apiData', this.propValue.options)
+      this.propValue.options = cloneDeep(val ? this.propValue.options : this.propValue.apiData)
+      if(!val){
+        this.updateOptionsFromApi()
+      }
+      this.updateProps();
+    }
   }
 });
 </script>
@@ -162,5 +185,19 @@ export default defineComponent({
   align-items: center;
   margin-top: 8px;
   gap: 8px;
+}
+.flex{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.sub-panel-title {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: #606266;
+}
+.mb-0{
+  margin-bottom: 0;
 }
 </style>

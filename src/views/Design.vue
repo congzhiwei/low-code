@@ -62,7 +62,7 @@
         canvasStore.currentView = viewValue === 'pc' || viewValue === 'mobile' ? viewValue : 'pc';
         canvasStore.projectName = config.projectName
 
-        const loadTableData = (api: any, key: string) => {
+        const loadData = (api: any, key: string) => {
           if(api){
             return service.post(api?.url, api?.paramsObj)
               .then((res:any) => {
@@ -94,8 +94,17 @@
                   canvasStore.components.forEach(async (comp:any) => {
                     if(comp.props.columns?.type === 'related' && !comp.props.columns?.useEditData){
                       comp.props.data = []
-                      comp.props.data = await loadTableData(comp.props.columns.api, comp.props.columns.apiKey)
+                      comp.props.data = await loadData(comp.props.columns.api, comp.props.columns.apiKey)
                       console.log('comp.props.data', comp.props.data)
+                    }
+                    if(comp.props.options?.type === 'related' && !comp.props.options?.useEditData){
+                      comp.props.options.options = []
+                      comp.props.options.options = await loadData(comp.props.options.api, comp.props.options.apiKey)
+
+                      comp.props.options.options = comp.props.options.options.map((item: any) => ({
+                        label: item[comp.props.options.labelField],
+                        value: item[comp.props.options.valueField]
+                      }))
                     }
                   })
               }

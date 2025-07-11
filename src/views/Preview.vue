@@ -137,7 +137,16 @@ export default defineComponent({
             project.value.components.forEach(async (comp) => {
               if(comp.props.columns?.type === 'related' && !comp.props.columns?.useEditData){
                 comp.props.data = []
-                comp.props.data = await loadTableData(comp.props.columns.api, comp.props.columns.apiKey)
+                comp.props.data = await loadData(comp.props.columns.api, comp.props.columns.apiKey)
+              }
+              if(comp.props.options?.type === 'related' && !comp.props.options?.useEditData){
+                comp.props.options.options = []
+                comp.props.options.options = await loadData(comp.props.options.api, comp.props.options.apiKey)
+
+                comp.props.options.options = comp.props.options.options.map((item: any) => ({
+                  label: item[comp.props.options.labelField],
+                  value: item[comp.props.options.valueField]
+                }))
               }
             })
           }
@@ -152,7 +161,7 @@ export default defineComponent({
       }
     }
 
-    const loadTableData = (api: any, key: string) => {
+    const loadData = (api: any, key: string) => {
       console.log('key==', key)
       if(api){
         return service.post(api?.url, api?.paramsObj)

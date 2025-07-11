@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-16 15:06:15
  * @LastEditors: zwcong
- * @LastEditTime: 2025-07-11 14:06:47
+ * @LastEditTime: 2025-07-11 15:35:55
 -->
 <template>
   <div>
@@ -103,6 +103,9 @@ export default defineComponent({
       this.updateProps();
     },
     handleApiChange() {
+      this.propValue.apiKey = ''
+      this.propValue.selectedApiList = []
+
       this.updateProps();
       this.fetchApiData();
     },
