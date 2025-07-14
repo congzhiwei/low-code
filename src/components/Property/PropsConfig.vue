@@ -3,12 +3,13 @@
  * @Author: zwcong
  * @Date: 2025-05-06 17:40:47
  * @LastEditors: zwcong
- * @LastEditTime: 2025-07-11 13:55:05
+ * @LastEditTime: 2025-07-14 18:24:25
 -->
 <template>
   <div>
     <template v-for="(value, key) in propsConfig" :key="key">
-      <div class="sub-panel" v-if="getConfigType(key)">
+     
+      <div class="sub-panel" v-if="getConfigType(key) && getOpenProp(key)">
         <label class="sub-panel-title">{{ getConfigName(key) }}</label>
         <template v-if="getConfigType(key) === 'radio'">
           <el-radio-group v-model="propsConfig[key]" @change="$emit('update')" size="small">
@@ -217,6 +218,14 @@ export default defineComponent({
     const getConfigKey = (configKey: string) => {
       return canvasStore.componentConfigs[props.componentType]?.[props.configType]?.[configKey]?.key;
     }
+    // 获取openProp 当设置openProp时要根据openProp的key来判断是否显示配置项
+    const getOpenProp = (configKey: string) => {
+      // 当有openProp时，返回openProp，否则返回true，表示默认开启
+      if (canvasStore.componentConfigs[props.componentType]?.[props.configType]?.[configKey]?.openProp) {
+        return props.propsConfig[canvasStore.componentConfigs[props.componentType]?.[props.configType]?.[configKey]?.openProp]
+      }
+      return true
+    }
 
     // const getConfigBtn = (configKey: string) => {
     //   return canvasStore.componentConfigs[props.componentType]?.[props.configType]?.[configKey]?.btn;
@@ -257,7 +266,8 @@ export default defineComponent({
       canvasStore, 
       getConfigType, 
       getConfigName, 
-      getConfigKey, 
+      getConfigKey,
+      getOpenProp,
       getConfigPlaceholder, 
       handleImageUpload,
       showTableDataDialog,

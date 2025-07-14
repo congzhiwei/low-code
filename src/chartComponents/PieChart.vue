@@ -3,7 +3,7 @@
  * @Author: zwcong
  * @Date: 2025-05-29 15:23:11
  * @LastEditors: zwcong
- * @LastEditTime: 2025-07-03 15:24:59
+ * @LastEditTime: 2025-07-14 17:50:50
 -->
 <template>
     <div :style="componentStyle">
@@ -25,6 +25,10 @@ const props = defineProps({
         type: String,
         default: '饼图'
     },
+    titleShow: {
+        type: Boolean,
+        default: true
+    },
     titleAlign: {
         type: String,
         default: 'center'
@@ -37,17 +41,17 @@ const props = defineProps({
         type: String,
         default: '{a} <br/>{b} : {c} ({d}%)'
     },
-    legendOrient: {
-        type: String,
-        default: 'vertical'
-    },
+    // legendOrient: {
+    //     type: String,
+    //     default: 'vertical'
+    // },
     legendAlign: {
         type: String,
-        default: 'left'
+        default: 'bottom'
     },
-    legendData: {
-        type: Array,
-        default: () => ['数据1', '数据2', '数据3']
+    legendShow: {
+        type: Boolean,
+        default: false
     },
     columns: {
         type: Object,
@@ -115,20 +119,23 @@ const option = computed(() => {
     // const dynamicLegendData = props.legendData.length 
     //     ? props.legendData 
     //     : props.columns.columns.map(col => col.label)
+    console.log('props.columns.columns', props.columns.columns)
 
     return {
         title: {
             text: props.title,
-            left: props.titleAlign
+            left: props.titleAlign,
+            show: props.titleShow
         },
         tooltip: {
             trigger: props.tooltipTrigger,
             formatter: props.tooltipFormatter
         },
         legend: {
-            orient: props.legendOrient,
-            align: props.legendAlign,
-            data: props.legendData
+            orient: props.legendAlign === 'left' || props.legendAlign === 'right' ? 'vertical' : 'horizontal',
+            top: props.legendAlign === 'top' || props.legendAlign === 'bottom' ? props.legendAlign : 'center',
+            left: props.legendAlign === 'left' || props.legendAlign === 'right'? props.legendAlign : 'center',
+            data: props.legendShow ? props.columns.columns.map(col => col.label) : []
         },
         series: [{
             name: props.seriesName,
